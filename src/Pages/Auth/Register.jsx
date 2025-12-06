@@ -7,9 +7,11 @@ import { Link, useLocation, useNavigate } from "react-router";
 import axios from "axios";
 import useAuth from "../../Hooks/UseAuth";
 import { toast } from "react-toastify";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
 const Register = () => {
   const { setUser, registerUser, updateUserProfile } = useAuth();
+  const axiosSecure = useAxiosSecure();
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -39,6 +41,19 @@ const Register = () => {
         .post(imageAPI_URL, formData)
         .then((res) => {
           const photoURL = res.data.data.url;
+
+          //Create user on database
+          const userInfo = {
+            email: user.email,
+            displayName: user.displayName,
+            photoURL: user.photoURL,
+          };
+          axiosSecure
+            .post("/users", userInfo)
+            .then(() => {})
+            .catch((err) => {
+              console.log(err);
+            });
 
           // Update User Profile
           const userProfile = {

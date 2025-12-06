@@ -3,10 +3,11 @@ import { FcGoogle } from "react-icons/fc";
 import { useLocation, useNavigate } from "react-router";
 import useAuth from "../../Hooks/UseAuth";
 import { toast } from "react-toastify";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
 const SocialLogin = () => {
   const { setUser, signUpWithGoogle } = useAuth();
-  //   const axiosSecure = useAxiosSecure();
+  const axiosSecure = useAxiosSecure();
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -16,8 +17,22 @@ const SocialLogin = () => {
       .then((result) => {
         const user = result.user;
         setUser(user);
-        toast("login successfully!");
-        navigate(location?.state || "/");
+
+        //Create user on database
+        const userInfo = {
+          email: user.email,
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+        };
+        axiosSecure
+          .post("/users", userInfo)
+          .then(() => {
+            navigate(location?.state || "/");
+            toast("login successfully!");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       })
       .catch((error) => {
         console.log(error);

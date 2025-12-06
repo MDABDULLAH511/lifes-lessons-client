@@ -5,6 +5,10 @@ import NotFound from "../Pages/Error/NotFound";
 import Home from "../Pages/Home/Home";
 import Login from "../Pages/Auth/Login";
 import Register from "../Pages/Auth/Register";
+import PrivateRoutes from "./PrivateRoutes";
+import AddLesson from "../Pages/Lessons/AddLesson";
+import UpgradeMembership from "../Pages/UpgradeMembership/UpgradeMembership";
+import PaymentSuccess from "../Pages/Payment/PaymentSuccess";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +29,26 @@ const router = createBrowserRouter([
       {
         path: "register",
         Component: Register,
+      },
+      {
+        path: "add-lesson",
+        element: (
+          <PrivateRoutes>
+            <AddLesson />
+          </PrivateRoutes>
+        ),
+      },
+      {
+        path: "upgrade-membership",
+        element: (
+          <PrivateRoutes>
+            <UpgradeMembership />
+          </PrivateRoutes>
+        ),
+      },
+      {
+        path: "payment-success",
+        Component: PaymentSuccess,
       },
     ],
   },

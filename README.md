@@ -15,5 +15,7 @@ It also allows users to explore lessons shared by others, discover new perspecti
 -React Icons
 -React Hook Form.
 -React Toastify
+-Axios
+-Stripe Payment Gateway
 
 **Key Features**
