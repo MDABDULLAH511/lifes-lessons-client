@@ -1,0 +1,33 @@
+/*Google Font */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+* {
+  font-family: "Poppins", sans-serif;
+}
+
+/* TailWind Css And DaisyUI css Import */
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: light --default;
+}
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+  --color-primary: #4681f7;
+  --color-secondary: #161a24;
+  --color-accent: #65cfa9;
+  --color-base-200: #0b0b0b;
+}
+
+/* Footer Social Icon Css */
+.icon {
+  @apply w-8 h-8  rounded-full flex justify-center items-center;
+}
+
+/* Navbar Profile Item Css */
+.profileItem {
+  @apply flex items-center gap-3 hover:text-[#ffffffbf] cursor-pointer duration-200;
+}
+.footerContactInfo {
+  @apply flex items-center gap-3 cursor-pointer duration-200;
+}
