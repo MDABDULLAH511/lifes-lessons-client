@@ -9,10 +9,21 @@ import { MdClose, MdLogout } from "react-icons/md";
 import NavbarTop from "./NavbarTop";
 import Logo from "./Logo";
 import { CgMenuRightAlt } from "react-icons/cg";
+import useAuth from "../Hooks/UseAuth";
+import { toast } from "react-toastify";
+import LoadingSpinner from "./LoadingSpinner";
 
 const Navbar = () => {
-  const user = null;
+  const { user, signOutUser, loading } = useAuth();
 
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+  const handleSignOut = () => {
+    signOutUser().then(() => {
+      toast.success("Log out successfully");
+    });
+  };
   // Nav Links
   const links = (
     <>
@@ -44,7 +55,7 @@ const Navbar = () => {
       <div className="shadow-sm md:py-0 bg-white ">
         <NavbarTop />
         <Container>
-          <div className="w-full flex items-center justify-between py-3 px-0">
+          <div className="w-full flex items-center justify-between py-2 px-0">
             {/* Nav Logo */}
             <div className=" flex items-center justify-start w-9/12 lg:w-3/12">
               <Logo />
@@ -52,19 +63,21 @@ const Navbar = () => {
 
             {/* Nav Link for Desktop Device */}
             <div className="hidden lg:flex justify-end items-center gap-5">
-              <ul className="menu menu-horizontal px-1 space-x-8">{links} </ul>
+              <ul className="menu menu-horizontal px-1 space-x-8">{links}</ul>
               <div>
                 {user ? (
-                  <div className="dropdown dropdown-end ">
+                  <div className="dropdown dropdown-end flex flex-col items-center">
                     <img
                       tabIndex={0}
                       src={user.photoURL ? user.photoURL : userIcon}
                       alt=""
-                      className="w-10 h-10  rounded-full bg-primary cursor-pointer p-1.5"
+                      className={`w-11 h-11 rounded-full bg-primary cursor-pointer ${
+                        user.photoURL ? "p-0.5" : "p-2"
+                      }`}
                     />
                     <div
                       tabIndex="-1"
-                      className="menu dropdown-content bg-base-200 rounded-[5px] border-b-3 border-primary z-1 mt-10 w-60 p-5 shadow-sm text-white space-y-4"
+                      className="menu dropdown-content bg-base-200 rounded-[5px] border-b-3 border-primary z-1 mt-15 w-60 p-5 shadow-sm text-white space-y-4"
                     >
                       {/* User Image and Name */}
                       <div className="flex gap-3 items-center mb-5">
@@ -88,7 +101,10 @@ const Navbar = () => {
                         </p>
                       </div>
                       {/* Logout Button */}
-                      <button className="btn bg-primary border-primary text-white hover:bg-transparent duration-300 fJost">
+                      <button
+                        onClick={handleSignOut}
+                        className="btn bg-primary border-primary text-white hover:bg-transparent duration-300 fJost"
+                      >
                         <MdLogout size={20} /> Logout
                       </button>
                     </div>
@@ -158,7 +174,9 @@ const Navbar = () => {
                             tabIndex={0}
                             src={user.photoURL ? user.photoURL : userIcon}
                             alt=""
-                            className="w-10 h-10  rounded-full bg-primary cursor-pointer p-1.5"
+                            className={`w-11 h-11 rounded-full bg-primary cursor-pointer ${
+                              user.photoURL ? "p-0.5" : "p-2"
+                            }`}
                           />
                           <div
                             tabIndex="-1"
@@ -188,7 +206,10 @@ const Navbar = () => {
                               </p>
                             </div>
                             {/* Logout Button */}
-                            <button className="btn bg-primary border-primary text-white hover:bg-transparent duration-300 fJost">
+                            <button
+                              onClick={handleSignOut}
+                              className="btn bg-primary border-primary text-white hover:bg-transparent duration-300 fJost"
+                            >
                               <MdLogout size={20} /> Logout
                             </button>
                           </div>

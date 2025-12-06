@@ -1,6 +1,6 @@
 import React from 'react';
 
-const PrivateLayout = () => {
+const DashboardLayout = () => {
     return (
         <div>
             
@@ -8,4 +8,4 @@ const PrivateLayout = () => {
     );
 };
 
-export default PrivateLayout;
+export default DashboardLayout;

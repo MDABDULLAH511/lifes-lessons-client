@@ -13,5 +13,7 @@ It also allows users to explore lessons shared by others, discover new perspecti
 -Tailwind CSS
 -DaiSyUi
 -React Icons
+-React Hook Form.
+-React Toastify
 
 **Key Features**
