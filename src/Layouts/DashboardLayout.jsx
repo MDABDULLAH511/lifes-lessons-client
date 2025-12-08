@@ -1,13 +1,24 @@
 import React from "react";
 import { Link, Outlet } from "react-router";
 import logo from "../assets/life's_lessons_logo.png";
-import { GoSidebarCollapse } from "react-icons/go";
+import { GoReport, GoSidebarCollapse } from "react-icons/go";
 import { IoHomeOutline } from "react-icons/io5";
 import { LuSettings2 } from "react-icons/lu";
 import { RiHeartAddFill, RiStickyNoteAddLine } from "react-icons/ri";
 import { SiReaddotcv } from "react-icons/si";
+import { FaRegUserCircle } from "react-icons/fa";
+import useUserStatus from "../Hooks/useUserStatus";
+import LoadingSpinner from "../Components/LoadingSpinner";
+import { HiOutlineUserGroup } from "react-icons/hi";
+import { SlNotebook } from "react-icons/sl";
 
 const DashboardLayout = () => {
+  const { role, userLoading } = useUserStatus();
+
+  if (userLoading) {
+    return <LoadingSpinner />;
+  }
+
   return (
     <div className="drawer lg:drawer-open">
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
@@ -48,6 +59,7 @@ const DashboardLayout = () => {
                 <img src={logo} alt="" className="w-10" />
               </Link>
             </li>
+
             {/* Dashboard Home */}
             <li>
               <Link
@@ -58,6 +70,19 @@ const DashboardLayout = () => {
                 {/* Home icon */}
                 <IoHomeOutline size={18} />
                 <span className="is-drawer-close:hidden">Home Page</span>
+              </Link>
+            </li>
+
+            {/* Dashboard Profile */}
+            <li>
+              <Link
+                to="/dashboard/profile"
+                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                data-tip="My Profile"
+              >
+                {/* Home icon */}
+                <FaRegUserCircle size={18} />
+                <span className="is-drawer-close:hidden">My Profile</span>
               </Link>
             </li>
 
@@ -103,9 +128,61 @@ const DashboardLayout = () => {
               </Link>
             </li>
 
+            {/* ==================== Admin Access Only ==================== */}
+            {role === "admin" && (
+              <>
+                <span className="h-0.5 w-full bg-gray-300"></span>
+                {/* Manage User  */}
+                <li>
+                  <Link
+                    to="/dashboard/admin/manage-users"
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Manage Users"
+                  >
+                    {/* Manage Users icon */}
+                    <HiOutlineUserGroup size={18} />
+
+                    <span className="is-drawer-close:hidden">Manage Users</span>
+                  </Link>
+                </li>
+
+                {/* Manage Lessons  */}
+                <li>
+                  <Link
+                    to="/dashboard/admin/manage-lessons"
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Manage Lessons"
+                  >
+                    {/* Manage Lessons icon */}
+                    <SlNotebook size={18} />
+                    <span className="is-drawer-close:hidden">
+                      Manage Lessons
+                    </span>
+                  </Link>
+                </li>
+
+                {/* Reported Lesson  */}
+                <li>
+                  <Link
+                    to="/dashboard/admin/reported-lessons"
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Reported Lesson"
+                  >
+                    {/* Reported Lesson icon */}
+                    <GoReport size={18} />
+                    <span className="is-drawer-close:hidden">
+                      Reported Lesson
+                    </span>
+                  </Link>
+                </li>
+              </>
+            )}
+
             {/* Settings */}
+            <span className="h-0.5 w-full bg-gray-300"></span>
             <li>
-              <button
+              <Link
+                to={"/dashboard/settings"}
                 className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                 data-tip="Settings"
               >
@@ -113,7 +190,7 @@ const DashboardLayout = () => {
                 <LuSettings2 size={18} />
 
                 <span className="is-drawer-close:hidden">Settings</span>
-              </button>
+              </Link>
             </li>
           </ul>
         </div>

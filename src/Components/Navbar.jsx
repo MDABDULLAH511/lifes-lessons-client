@@ -77,7 +77,7 @@ const Navbar = () => {
                         src={user.photoURL ? user.photoURL : userIcon}
                         alt=""
                         className={`w-11 h-11 rounded-full bg-primary cursor-pointer ${
-                          user.photoURL ? "p-0.5" : "p-2"
+                          user.photoURL ? "p-0.5" : "p-1.5"
                         }`}
                       />
                       {/* tooltip-container */}
@@ -107,7 +107,7 @@ const Navbar = () => {
                         <img
                           src={user.photoURL ? user.photoURL : userIcon}
                           alt=""
-                          className="w-11 h-11  rounded-[5px] bg-primary cursor-pointer p-1"
+                          className="w-11 h-11  rounded-[5px] bg-white cursor-pointer p-0.5"
                         />
                         <p className="max-w-[200px] truncate">
                           {user.displayName ? user.displayName : "Unknown"}
@@ -116,12 +116,12 @@ const Navbar = () => {
 
                       {/* Link for User */}
                       <div className="space-y-3">
-                        <p className="profileItem">
+                        <Link to={"/dashboard/profile"} className="profileItem">
                           <LuUser size={20} /> Profile
-                        </p>
-                        <p className="profileItem">
+                        </Link>
+                        <Link to={"/dashboard"} className="profileItem">
                           <LuLayoutDashboard size={18} /> Dashboard
-                        </p>
+                        </Link>
                       </div>
                       {/* Logout Button */}
                       <button

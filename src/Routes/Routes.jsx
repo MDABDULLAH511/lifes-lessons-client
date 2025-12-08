@@ -13,7 +13,11 @@ import DashboardLayout from "../Layouts/DashboardLayout";
 import DashboardHome from "../Pages/Dashboard/DashboardHome/DashboardHome";
 import MyLessons from "../Pages/Dashboard/MyLessons";
 import MyFavorites from "../Pages/Dashboard/MyFavorites";
-import UserProfile from "../Pages/Dashboard/DashboardProfile/UserProfile";
+import DashboardProfile from "../Pages/Dashboard/DashboardProfile/DashboardProfile";
+import ManageUsers from "../Pages/Dashboard/OnlyAdmin/ManageUsers";
+import ManageLessons from "../Pages/Dashboard/OnlyAdmin/ManageLessons";
+import ReportedLessons from "../Pages/Dashboard/OnlyAdmin/ReportedLessons";
+import Settings from "../Pages/Dashboard/Settings";
 
 const router = createBrowserRouter([
   {
@@ -50,7 +54,7 @@ const router = createBrowserRouter([
     ],
   },
 
-  //============================= Dashboard Router
+  //========== Dashboard Router ====================//
   {
     path: "dashboard",
     element: (
@@ -70,6 +74,11 @@ const router = createBrowserRouter([
         path: "add-lesson",
         Component: AddLesson,
       },
+
+      {
+        path: "profile",
+        Component: DashboardProfile,
+      },
       {
         path: "my-lessons",
         Component: MyLessons,
@@ -79,8 +88,22 @@ const router = createBrowserRouter([
         Component: MyFavorites,
       },
       {
-        path: "user-profile",
-        Component: UserProfile,
+        path: "settings",
+        Component: Settings,
+      },
+
+      /* ========== Admin Access Only ========== */
+      {
+        path: "admin/manage-users",
+        Component: ManageUsers,
+      },
+      {
+        path: "admin/manage-lessons",
+        Component: ManageLessons,
+      },
+      {
+        path: "admin/reported-lessons",
+        Component: ReportedLessons,
       },
     ],
   },

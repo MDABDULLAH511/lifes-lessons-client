@@ -1,21 +1,20 @@
 import React from "react";
 import useUserStatus from "../../../Hooks/useUserStatus";
 import LoadingSpinner from "../../../Components/LoadingSpinner";
-import AdminDashboardHome from "./AdminDashboardHome";
-import UserDashboardHome from "./UserDashboardHome";
+import AdminProfile from "./AdminProfile";
+import UserProfile from "./UserProfile";
 
-const DashboardHome = () => {
+const DashboardProfile = () => {
   const { role, userLoading } = useUserStatus();
 
   if (userLoading) {
     return <LoadingSpinner />;
   }
-
   if (role === "admin") {
-    return <AdminDashboardHome />;
+    return <AdminProfile />;
   } else {
-    return <UserDashboardHome />;
+    return <UserProfile />;
   }
 };
 
-export default DashboardHome;
+export default DashboardProfile;
