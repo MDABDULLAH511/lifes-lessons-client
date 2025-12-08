@@ -6,9 +6,14 @@ import Home from "../Pages/Home/Home";
 import Login from "../Pages/Auth/Login";
 import Register from "../Pages/Auth/Register";
 import PrivateRoutes from "./PrivateRoutes";
-import AddLesson from "../Pages/Lessons/AddLesson";
+import AddLesson from "../Pages/Dashboard/AddLesson";
 import UpgradeMembership from "../Pages/UpgradeMembership/UpgradeMembership";
 import PaymentSuccess from "../Pages/Payment/PaymentSuccess";
+import DashboardLayout from "../Layouts/DashboardLayout";
+import DashboardHome from "../Pages/Dashboard/DashboardHome/DashboardHome";
+import MyLessons from "../Pages/Dashboard/MyLessons";
+import MyFavorites from "../Pages/Dashboard/MyFavorites";
+import UserProfile from "../Pages/Dashboard/DashboardProfile/UserProfile";
 
 const router = createBrowserRouter([
   {
@@ -31,14 +36,6 @@ const router = createBrowserRouter([
         Component: Register,
       },
       {
-        path: "add-lesson",
-        element: (
-          <PrivateRoutes>
-            <AddLesson />
-          </PrivateRoutes>
-        ),
-      },
-      {
         path: "upgrade-membership",
         element: (
           <PrivateRoutes>
@@ -49,6 +46,41 @@ const router = createBrowserRouter([
       {
         path: "payment-success",
         Component: PaymentSuccess,
+      },
+    ],
+  },
+
+  //============================= Dashboard Router
+  {
+    path: "dashboard",
+    element: (
+      <PrivateRoutes>
+        <DashboardLayout />
+      </PrivateRoutes>
+    ),
+    hydrateFallbackElement: <LoadingSpinner />,
+    errorElement: <NotFound />,
+    children: [
+      {
+        index: true,
+        Component: DashboardHome,
+      },
+
+      {
+        path: "add-lesson",
+        Component: AddLesson,
+      },
+      {
+        path: "my-lessons",
+        Component: MyLessons,
+      },
+      {
+        path: "my-favorites",
+        Component: MyFavorites,
+      },
+      {
+        path: "user-profile",
+        Component: UserProfile,
       },
     ],
   },

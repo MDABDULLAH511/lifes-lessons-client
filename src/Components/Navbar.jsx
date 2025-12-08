@@ -4,7 +4,7 @@ import { Link } from "react-router";
 import Container from "./Container";
 import userIcon from "../assets/user.png";
 import { LuLayoutDashboard, LuUser } from "react-icons/lu";
-import { FaPlus } from "react-icons/fa6";
+import { FaPlus, FaStar } from "react-icons/fa6";
 import { MdClose, MdLogout } from "react-icons/md";
 import NavbarTop from "./NavbarTop";
 import Logo from "./Logo";
@@ -12,11 +12,13 @@ import { CgMenuRightAlt } from "react-icons/cg";
 import useAuth from "../Hooks/UseAuth";
 import { toast } from "react-toastify";
 import LoadingSpinner from "./LoadingSpinner";
+import useUserStatus from "../Hooks/useUserStatus";
 
 const Navbar = () => {
   const { user, signOutUser, loading } = useAuth();
+  const { isPremium, userLoading } = useUserStatus();
 
-  if (loading) {
+  if (loading || userLoading) {
     return <LoadingSpinner />;
   }
   const handleSignOut = () => {
@@ -31,7 +33,7 @@ const Navbar = () => {
         <MyNavLink to="/">Home</MyNavLink>
       </li>
       <li>
-        <MyNavLink to="/add-lesson">Add Lesson</MyNavLink>
+        <MyNavLink to="/dashboard/add-lesson">Add Lesson</MyNavLink>
       </li>
       <li>
         <MyNavLink to="/public-lessons">Public Lessons</MyNavLink>
@@ -40,16 +42,17 @@ const Navbar = () => {
       {user && (
         <>
           <li>
-            <MyNavLink to="/my-lessons">My Lessons</MyNavLink>
+            <MyNavLink to="/dashboard/my-lessons">My Lessons</MyNavLink>
           </li>
-          <li>
-            <MyNavLink to="/upgrade-membership">Upgrade Membership</MyNavLink>
-          </li>
+          {isPremium === false && (
+            <li>
+              <MyNavLink to="/upgrade-membership">Upgrade Membership</MyNavLink>
+            </li>
+          )}
         </>
       )}
     </>
   );
-
   return (
     <>
       <div className="shadow-sm md:py-0 bg-white ">
@@ -64,17 +67,37 @@ const Navbar = () => {
             {/* Nav Link for Desktop Device */}
             <div className="hidden lg:flex justify-end items-center gap-5">
               <ul className="menu menu-horizontal px-1 space-x-8">{links}</ul>
+
               <div>
                 {user ? (
                   <div className="dropdown dropdown-end flex flex-col items-center">
-                    <img
-                      tabIndex={0}
-                      src={user.photoURL ? user.photoURL : userIcon}
-                      alt=""
-                      className={`w-11 h-11 rounded-full bg-primary cursor-pointer ${
-                        user.photoURL ? "p-0.5" : "p-2"
-                      }`}
-                    />
+                    <div className=" relative">
+                      <img
+                        tabIndex={0}
+                        src={user.photoURL ? user.photoURL : userIcon}
+                        alt=""
+                        className={`w-11 h-11 rounded-full bg-primary cursor-pointer ${
+                          user.photoURL ? "p-0.5" : "p-2"
+                        }`}
+                      />
+                      {/* tooltip-container */}
+                      {isPremium === true && (
+                        <div className="tooltip-container absolute -top-2 -right-2">
+                          <div className="relative">
+                            <div className="group peer relative z-10 p-1">
+                              <FaStar
+                                size={20}
+                                color="#f6b900"
+                                className="duration-5000 group-hover:rotate-360 group-hover:scale-130"
+                              />
+                            </div>
+                            <div className="absolute left-1/2 w-40 -translate-x-1/2 translate-y-6 rounded bg-white text-primary font-semibold shadow p-3 text-sm opacity-0  peer-hover:bottom-[3.3rem] peer-hover:opacity-100 peer-hover:duration-500">
+                              <p className="text-center">Premium Member</p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                     <div
                       tabIndex="-1"
                       className="menu dropdown-content bg-base-200 rounded-[5px] border-b-3 border-primary z-1 mt-15 w-60 p-5 shadow-sm text-white space-y-4"
