@@ -20,7 +20,7 @@ const AddLesson = () => {
   const { isPremium, userLoading } = useUserStatus();
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
-  // const [lessonImg, setLessonImg] = useState();
+  const [viewImage, setViewImage] = useState();
 
   if (userLoading) {
     return <LoadingSpinner />;
@@ -29,7 +29,7 @@ const AddLesson = () => {
   const handleAddLesson = async (data) => {
     //store the image and get the Photo url
     let lessonImage = "";
-    const selectedFile = data.lessonImg && data.lessonImg[0];
+    const selectedFile = data.lessonImg?.[0];
 
     // Upload only if image exists
     if (selectedFile) {
@@ -183,36 +183,36 @@ const AddLesson = () => {
                     <IoCloudUploadOutline size={40} />
 
                     <p>Select an image to visually represent your lesson.</p>
-                    <input
-                      className="inputImg"
-                      type="file"
-                      {...register("lessonImg")}
-                    />
                     {/* <input
                       className="inputImg"
                       type="file"
                       {...register("lessonImg")}
-                      onChange={(e) => {
-                        const file = e.target.files[0];
-                        if (file) {
-                          setLessonImg(URL.createObjectURL(file));
-                          setValue("lessonImg", file);
-                        }
-                      }}
                     /> */}
+                    <input
+                      type="file"
+                      className="inputImg"
+                      {...register("lessonImg", {
+                        onChange: (e) => {
+                          const file = e.target.files[0];
+                          if (file) {
+                            setViewImage(URL.createObjectURL(file));
+                          }
+                        },
+                      })}
+                    />
                   </label>
                 </div>
 
                 {/* Show selected Img */}
-                {/* <div>
-                  {lessonImg && (
+                <div>
+                  {viewImage && (
                     <img
-                      src={lessonImg}
+                      src={viewImage}
                       alt=""
                       className="h-50 w-50 object-cover object-center rounded-lg"
                     />
                   )}
-                </div> */}
+                </div>
               </div>
 
               {/* Lesson Description  */}
@@ -244,12 +244,3 @@ const AddLesson = () => {
 };
 
 export default AddLesson;
-// <input
-//   type="email"
-//   {...register("email", { required: true })}
-//   className="input w-full"
-//   placeholder="Email"
-// />
-// {errors.email?.type === "required" && (
-//   <p className="text-red-500">Email is required</p>
-// )}

@@ -42,19 +42,6 @@ const Register = () => {
         .then((res) => {
           const photoURL = res.data.data.url;
 
-          //Create user on database
-          const userInfo = {
-            email: user.email,
-            displayName: user.displayName,
-            photoURL: user.photoURL,
-          };
-          axiosSecure
-            .post("/users", userInfo)
-            .then(() => {})
-            .catch((err) => {
-              console.log(err);
-            });
-
           // Update User Profile
           const userProfile = {
             displayName: data.name,
@@ -62,8 +49,21 @@ const Register = () => {
           };
           updateUserProfile(userProfile)
             .then(() => {
-              toast("Register Profile successfully!");
-              navigate(location.state || "/");
+              //Create user on database
+              const userInfo = {
+                email: user.email,
+                displayName: user.displayName,
+                photoURL: user.photoURL,
+              };
+              axiosSecure
+                .post("/users", userInfo)
+                .then(() => {
+                  toast("Register Profile successfully!");
+                  navigate(location.state || "/");
+                })
+                .catch((err) => {
+                  console.log(err.message);
+                });
             })
             .catch((error) => {
               console.log(error);
