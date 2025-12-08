@@ -1,8 +1,6 @@
-/*Google Font */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
-
+@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
 * {
-  font-family: "Poppins", sans-serif;
+  font-family: "Raleway", sans-serif;
 }
 
 /* TailWind Css And DaisyUI css Import */
@@ -30,4 +28,41 @@
 }
 .footerContactInfo {
   @apply flex items-center gap-3 cursor-pointer duration-200;
+}
+
+/* Form Label Css for Add lesson page form */
+.label2 {
+  @apply text-black text-[16px] mt-5;
+}
+
+/* Main Button CSS */
+.button-main {
+  @apply font-semibold py-4 px-10 rounded-lg bg-primary cursor-pointer mt-10  text-white capitalize;
+}
+
+.input,
+.textarea,
+.select {
+  @apply outline-0 border-0 shadow;
+}
+
+.inputImg {
+  max-width: 190px;
+  display: none;
+}
+
+.labelFileImg {
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 250px;
+  height: 200px;
+  border: 2px dashed #ccc;
+  border-radius: 5px;
+  align-items: center;
+  text-align: center;
+  padding: 10px;
+  color: #0b0b0b;
+  cursor: pointer;
 }

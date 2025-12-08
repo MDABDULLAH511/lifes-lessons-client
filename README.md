@@ -11,6 +11,7 @@ It also allows users to explore lessons shared by others, discover new perspecti
 -React Vite
 -React Router DOM
 -Tailwind CSS
+-Google Form (Raleway)
 -DaiSyUi
 -React Icons
 -React Hook Form.

@@ -34,7 +34,7 @@ const DashboardLayout = () => {
             <GoSidebarCollapse size={30} />
           </label>
           <div className="px-4">
-            <p className="text-secondary text-[18px] md:text-[22px] font-extrabold">
+            <p className="text-secondary text-[16px] md:text-[22px] font-extrabold">
               Life's <span className="text-primary">Lessons </span> Dashboard
             </p>
           </div>
