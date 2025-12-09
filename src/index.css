@@ -1,6 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
+
 * {
   font-family: "Raleway", sans-serif;
+}
+.numberFont {
+  font-family: "Lato", sans-serif;
 }
 
 /* TailWind Css And DaisyUI css Import */
@@ -40,12 +44,14 @@
   @apply font-semibold py-4 px-10 rounded-lg bg-primary cursor-pointer mt-10  text-white capitalize;
 }
 
+/* Input filed css for all input filed in this application */
 .input,
 .textarea,
 .select {
   @apply outline-0 border-0 shadow;
 }
 
+/* Input image filed css for Add lesson Image filed */
 .inputImg {
   max-width: 190px;
   display: none;
@@ -65,4 +71,19 @@
   padding: 10px;
   color: #0b0b0b;
   cursor: pointer;
+}
+
+/* Custom Zebra fom my lesson page table  */
+.my-custom-zebra tbody tr:nth-child(odd) {
+  background-color: transparent !important;
+}
+
+.my-custom-zebra tbody tr:nth-child(even) {
+  background-color: #65cfa813 !important;
+}
+
+
+/* My lesson action button css */
+.actionBtn{
+  @apply btn bg-transparent btn-square hover:bg-primary border-0 shadow hover:text-white
 }

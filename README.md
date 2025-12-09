@@ -11,11 +11,12 @@ It also allows users to explore lessons shared by others, discover new perspecti
 -React Vite
 -React Router DOM
 -Tailwind CSS
--Google Form (Raleway)
+-Google Form (Raleway, Lato)
 -DaiSyUi
 -React Icons
 -React Hook Form.
 -React Toastify
+-Sweet Alert2
 -Axios
 -Stripe Payment Gateway
 

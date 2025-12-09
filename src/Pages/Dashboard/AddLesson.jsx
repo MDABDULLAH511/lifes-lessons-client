@@ -13,16 +13,17 @@ const AddLesson = () => {
   const {
     register,
     handleSubmit,
-    setValue,
+    reset,
     formState: { errors },
   } = useForm();
 
   const { isPremium, userLoading } = useUserStatus();
+  const { user, loading } = useAuth();
   const axiosSecure = useAxiosSecure();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [viewImage, setViewImage] = useState();
 
-  if (userLoading) {
+  if (userLoading || loading) {
     return <LoadingSpinner />;
   }
 
@@ -46,9 +47,11 @@ const AddLesson = () => {
     }
 
     // Save the Lesson to the data base
+
     const lessonData = {
       ...data,
       lessonImage,
+      createdBy: user.email,
     };
 
     await axiosSecure.post("/lessons", lessonData).then((res) => {
@@ -56,12 +59,16 @@ const AddLesson = () => {
         toast.success("Lesson Created Successfully");
       }
     });
+
+    // Reset the form
+    reset();
+    setViewImage(null);
   };
 
   return (
     <div className="bg-accent/5 m-2 md:m-15 p-2 md:p-10 rounded-xl ">
       {/* Page Title */}
-      <div className=" text-center mb-8">
+      <div className=" text-center mb-8 lg:w-8/12 mx-auto">
         <h2 className="font-bold text-xl md:text-4xl mb-2">Add A Lesson</h2>
         <p className="font-semibold">
           Create a meaningful lesson from your life and turn your experiences
@@ -101,6 +108,7 @@ const AddLesson = () => {
                 <option value="career"> Career </option>
                 <option value="relationships"> Relationships </option>
                 <option value="mindset"> Mindset </option>
+                <option value="mistakesLearned"> Mistakes Learned </option>
               </select>
               {errors.category?.type === "required" && (
                 <p className="text-red-500">Select a category</p>
