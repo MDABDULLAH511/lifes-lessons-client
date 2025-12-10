@@ -18,6 +18,7 @@ import ManageUsers from "../Pages/Dashboard/OnlyAdmin/ManageUsers";
 import ManageLessons from "../Pages/Dashboard/OnlyAdmin/ManageLessons";
 import ReportedLessons from "../Pages/Dashboard/OnlyAdmin/ReportedLessons";
 import Settings from "../Pages/Dashboard/Settings";
+import PublicLessons from "../Pages/Lessons/PublicLessons";
 
 const router = createBrowserRouter([
   {
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
       {
         path: "payment-success",
         Component: PaymentSuccess,
+      },
+      {
+        path: "public-lessons",
+        Component: PublicLessons,
       },
     ],
   },
