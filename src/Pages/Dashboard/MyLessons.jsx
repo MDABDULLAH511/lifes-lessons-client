@@ -10,10 +10,12 @@ import Swal from "sweetalert2";
 import { useForm } from "react-hook-form";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import useUserStatus from "../../Hooks/useUserStatus";
+import { toast } from "react-toastify";
+import LoadingSpinner from "../../Components/LoadingSpinner";
 
 const MyLessons = () => {
-  const { user } = useAuth();
-  const { isPremium } = useUserStatus();
+  const { user, loading } = useAuth();
+  const { isPremium, userLoading } = useUserStatus();
   const axiosSecure = useAxiosSecure();
   const lessonModalRef = useRef();
   const [viewImage, setViewImage] = useState();
@@ -35,9 +37,12 @@ const MyLessons = () => {
     },
   });
 
+  if (userLoading || loading) {
+    return <LoadingSpinner />;
+  }
   // Make a user Friendly table (Control Lesson Tile length)
   const limitWords = (text) => {
-    return text.length > 20 ? text.slice(0, 30) + "..." : text;
+    return text?.length > 20 ? text.slice(0, 30) + "..." : text;
   };
 
   //Delete Lesson Handler
@@ -110,6 +115,35 @@ const MyLessons = () => {
     lessonModalRef.current.close();
   };
 
+  //Handler Update Lesson Visibility  and Access Level
+  // Toggle Privacy (Public/Private)
+  const handleTogglePrivacy = async (id, newPrivacy) => {
+    const res = await axiosSecure.patch(`/lessons/${id}/status`, {
+      visibility: newPrivacy,
+    });
+    if (res.data.modifiedCount) {
+      refetch();
+      toast(`Privacy updated to ${newPrivacy}`);
+    }
+  };
+
+  // Toggle Access Level (Free/Paid)
+  const handleToggleAccessLevel = async (id, newAccessLevel) => {
+    console.log(isPremium);
+    if (isPremium === true) {
+      const res = await axiosSecure.patch(`/lessons/${id}/status`, {
+        accessLevel: newAccessLevel,
+      });
+      if (res.data.modifiedCount) {
+        refetch();
+        toast(`Access Level updated to ${newAccessLevel}`);
+      }
+      return;
+    } else {
+      toast.error("Upgrade to Premium to create paid lessons.");
+    }
+  };
+
   return (
     <div className="bg-accent/5 m-2 md:m-15 p-2 md:p-10 rounded-xl">
       {/* Page Title */}
@@ -144,7 +178,7 @@ const MyLessons = () => {
       {/* Page Content */}
       <div className="overflow-x-auto">
         <table className="table table-zebra my-custom-zebra">
-          {/* head */}
+          {/* Table head */}
           <thead>
             <tr>
               <th>#</th>
@@ -163,8 +197,42 @@ const MyLessons = () => {
                 <th>{i + 1}</th>
                 <td>{limitWords(lesson.lessonTitle)}</td>
                 <td className="capitalize">{lesson.category}</td>
-                <td>{lesson.privacy}</td>
-                <td>{lesson.accessLevel}</td>
+                {/* private :public */}
+                <td>
+                  <label className="switch">
+                    <input
+                      type="checkbox"
+                      checked={lesson.privacy === "private"}
+                      onChange={(e) =>
+                        handleTogglePrivacy(
+                          lesson._id,
+                          e.target.checked ? "private" : "public"
+                        )
+                      }
+                    />
+                    <span>Public</span>
+                    <span>Private</span>
+                  </label>
+                </td>
+
+                {/* Free/Paid */}
+                <td>
+                  <label className="switch">
+                    <input
+                      type="checkbox"
+                      checked={lesson.accessLevel === "paid"}
+                      onChange={(e) =>
+                        handleToggleAccessLevel(
+                          lesson._id,
+                          e.target.checked ? "paid" : "free"
+                        )
+                      }
+                    />
+                    <span>Free</span>
+                    <span>Paid</span>
+                  </label>
+                </td>
+
                 <td>{new Date(lesson.createdAt).toLocaleDateString()}</td>
                 <td className="flex gap-3">
                   {/* view */}
@@ -323,18 +391,13 @@ const MyLessons = () => {
                     {/*Lesson Images Input and show */}
                     <div className="flex flex-col md:flex-row mt-6 gap-5 items-center">
                       {/* Lesson Image */}
-                      <div>
-                        <label className="labelFileImg">
+                      <div className="flex-1">
+                        <label className="labelFileImg labelFileImgUpdatePage">
                           <IoCloudUploadOutline size={40} />
 
                           <p>
                             Select an image to visually represent your lesson.
                           </p>
-                          {/* <input
-                                className="inputImg"
-                                type="file"
-                                {...register("lessonImg")}
-                              /> */}
                           <input
                             type="file"
                             className="inputImg"
@@ -351,7 +414,7 @@ const MyLessons = () => {
                       </div>
 
                       {/* Show selected Img */}
-                      <div>
+                      <div className="flex-1">
                         {viewImage && (
                           <img
                             src={viewImage}
