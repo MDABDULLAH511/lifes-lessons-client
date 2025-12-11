@@ -18,7 +18,6 @@ const PublicLessons = () => {
     },
   });
 
-  console.log(lessons);
   return (
     <div>
       {/* Public lesson page Banner */}
@@ -68,12 +67,3 @@ const PublicLessons = () => {
 };
 
 export default PublicLessons;
-
-// Lesson Title
-// Short Description Preview
-// Category
-// Emotional Tone
-// Creator Info (name + photo)
-// Access level
-// Created Date
-// See Details Button → (opens full Life Lesson Details page)

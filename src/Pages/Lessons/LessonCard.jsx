@@ -94,9 +94,15 @@ const LessonCard = ({ lesson }) => {
           </p>
         </div>
       </div>
-      <Link
+      {/* <Link
         to={`/lessons/${_id}`}
         className="mt-4 w-full block text-center border border-primary text-primary font-medium py-2 rounded-sm hover:bg-primary hover:text-white duration-300"
+      >
+        See Details
+      </Link> */}
+      <Link
+        to={`/lessons/${_id}`}
+        className="mt-4 w-full block text-center bg-primary text-white font-medium py-2 rounded-sm hover:bg-[#225ccf] duration-300"
       >
         See Details
       </Link>
