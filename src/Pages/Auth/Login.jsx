@@ -5,6 +5,7 @@ import { Link, useLocation, useNavigate } from "react-router";
 import SocialLogin from "./SocialLogin";
 import loginPageImage from "../../assets/loginpageimg.jpg";
 import useAuth from "../../Hooks/UseAuth";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const {
@@ -13,7 +14,7 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  const { setUser, singInUser } = useAuth();
+  const { setUser, singInUser, setLoading } = useAuth();
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -22,10 +23,33 @@ const Login = () => {
     singInUser(data.email, data.password)
       .then((result) => {
         setUser(result.user);
+        toast.success("✅ Login successful!");
         navigate(location?.state || "/");
       })
       .catch((error) => {
-        console.log(error);
+        switch (error.code) {
+          case "auth/invalid-email":
+            toast.error("❌ Please enter a valid email address.");
+            break;
+
+          case "auth/user-not-found":
+            toast.error("🙁 No account found with this email.");
+            break;
+
+          case "auth/wrong-password":
+          case "auth/invalid-credential":
+          case "auth/invalid-login-credentials":
+            toast.error("❌ Invalid email or password. Please try again.");
+            break;
+
+          case "auth/too-many-requests":
+            toast.error("🚫 Too many attempts. Try again later.");
+            break;
+
+          default:
+            toast.error("⚠️ Login failed. Please try again.");
+        }
+        setLoading(false);
       });
   };
 

@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
 const Register = () => {
-  const { setUser, registerUser, updateUserProfile } = useAuth();
+  const { setUser, registerUser, updateUserProfile, setLoading } = useAuth();
   const axiosSecure = useAxiosSecure();
 
   const location = useLocation();
@@ -24,56 +24,116 @@ const Register = () => {
   } = useForm();
 
   const handleRegistration = (data) => {
-    console.log(data);
     const profileImage = data.photo && data.photo[0];
-    registerUser(data.email, data.password).then((result) => {
-      const user = result.user;
-      setUser(user);
+    registerUser(data.email, data.password)
+      .then((result) => {
+        const user = result.user;
+        setUser(user);
 
-      //store the image and get the Photo url
-      const formData = new FormData();
-      formData.append("image", profileImage);
-      const imageAPI_URL = `https://api.imgbb.com/1/upload?key=${
-        import.meta.env.VITE_image_host_key
-      }`;
+        //store the image and get the Photo url
+        const formData = new FormData();
+        formData.append("image", profileImage);
+        const imageAPI_URL = `https://api.imgbb.com/1/upload?key=${
+          import.meta.env.VITE_image_host_key
+        }`;
 
-      axios
-        .post(imageAPI_URL, formData)
-        .then((res) => {
-          const photoURL = res.data.data.url;
+        axios
+          .post(imageAPI_URL, formData)
+          .then((res) => {
+            const photoURL = res.data.data.url;
 
-          // Update User Profile
-          const userProfile = {
-            displayName: data.name,
-            photoURL: photoURL,
-          };
-          updateUserProfile(userProfile)
-            .then(() => {
-              //Create user on database
-              const userInfo = {
-                email: user.email,
-                displayName: user.displayName,
-                photoURL: user.photoURL,
-              };
-              axiosSecure
-                .post("/users", userInfo)
-                .then(() => {
-                  toast("Register Profile successfully!");
-                  navigate(location.state || "/");
-                })
-                .catch((err) => {
-                  console.log(err.message);
-                });
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        })
+            // Update User Profile
+            const userProfile = {
+              displayName: data.name,
+              photoURL: photoURL,
+            };
+            updateUserProfile(userProfile)
+              .then(() => {
+                //Create user on database
+                const userInfo = {
+                  email: user.email,
+                  displayName: user.displayName,
+                  photoURL: user.photoURL,
+                };
+                axiosSecure
+                  .post("/users", userInfo)
+                  .then(() => {
+                    toast.success("Account created successfully! 🎉");
+                    navigate(location.state || "/");
+                  })
+                  .catch((err) => {
+                    toast("❌ Failed to create user on database.");
+                    setLoading(false);
+                  });
+              })
+              .catch((error) => {
+                toast("❌ Failed to update user profile.");
+                setLoading(false);
+              });
+          })
 
-        .catch((error) => {
-          console.log(error);
-        });
-    });
+          .catch((error) => {
+            toast("❌ Failed to upload user photo url.");
+            setLoading(false);
+          });
+      })
+      .catch((error) => {
+        switch (error.code) {
+          case "auth/email-already-in-use":
+            toast.error("📧 This email is already registered. Try logging in!");
+            break;
+
+          case "auth/invalid-email":
+            toast.error("❌ The email address format looks invalid.");
+            break;
+
+          case "auth/missing-password":
+            toast.error("⚠️ Please enter your password before continuing.");
+            break;
+
+          case "auth/user-not-found":
+            toast.error(
+              "🙈 No account found with this email. Please sign up first."
+            );
+            break;
+
+          case "auth/wrong-password":
+            toast.error("🚫 Incorrect password. Please try again!");
+            break;
+
+          case "auth/too-many-requests":
+            toast.error(
+              "🕒 Too many attempts! Please wait and try again later."
+            );
+            break;
+
+          case "auth/network-request-failed":
+            toast.error(
+              "🌐 Network error. Please check your internet connection."
+            );
+            break;
+
+          case "auth/invalid-credential":
+            toast.error(
+              "❗Invalid credentials. Please check your email and password."
+            );
+            break;
+
+          case "auth/popup-closed-by-user":
+            toast.error("🙋‍♂️ Login popup closed before finishing. Try again!");
+            break;
+
+          case "auth/operation-not-allowed":
+            toast.error(
+              "🚷 This sign-in method is not allowed. Contact support."
+            );
+            break;
+
+          default:
+            toast.error("🐾 Something went wrong. Please try again later!");
+        }
+        setLoading(false);
+      });
   };
   return (
     <Container>
