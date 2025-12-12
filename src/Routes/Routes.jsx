@@ -20,7 +20,8 @@ import ReportedLessons from "../Pages/Dashboard/OnlyAdmin/ReportedLessons";
 import Settings from "../Pages/Dashboard/Settings";
 import PublicLessons from "../Pages/Lessons/PublicLessons";
 import LessonDetails from "../Pages/Lessons/LessonsDertails/LessonDetails";
-import text from "../Pages/Lessons/text";
+import UserProfile from "../Pages/Dashboard/DashboardProfile/UserProfile";
+import AuthorProfile from "../Pages/Lessons/AuthorProfile";
 
 const router = createBrowserRouter([
   {
@@ -59,14 +60,18 @@ const router = createBrowserRouter([
         Component: PublicLessons,
       },
       {
-        path: "text",
-        Component: text,
-      },
-      {
         path: "lessons/:id",
         element: (
           <PrivateRoutes>
             <LessonDetails />
+          </PrivateRoutes>
+        ),
+      },
+      {
+        path: "profile/:email",
+        element: (
+          <PrivateRoutes>
+            <AuthorProfile />
           </PrivateRoutes>
         ),
       },
