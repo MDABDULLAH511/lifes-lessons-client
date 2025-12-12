@@ -237,4 +237,7 @@
   fill: #f09f33;
   transition: 0.3s ease;
 }
-/*============== Upgrade Membership button for Public Lesson page End ============== */
+/*============== Timer progress bar color in SweetAlert2 ============== */
+.swal2-timer-progress-bar {
+  background-color: #4681f7 !important; /* your color */
+}

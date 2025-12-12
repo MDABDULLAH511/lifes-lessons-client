@@ -4,9 +4,106 @@ import { BsCalendar2Date } from "react-icons/bs";
 import { MdCreate } from "react-icons/md";
 import FavoriteButton from "./FavoriteButton";
 import { FaShareAlt } from "react-icons/fa";
+import Swal from "sweetalert2";
+import useAuth from "../../../Hooks/UseAuth";
+import useAxios from "../../../Hooks/useAxios";
 
 const LessonContent = ({ lesson }) => {
-  console.log(lesson);
+  const { user } = useAuth();
+  const axiosInstance = useAxios();
+
+  // Handle Lesson Report
+  const handleLessonReport = async (lessonId) => {
+    //Check user
+    if (!user) {
+      return Swal.fire({
+        title: "Login Required",
+        text: "You must be logged in to report a lesson.",
+        icon: "warning",
+        confirmButtonText: "OK",
+        timer: 2000,
+        timerProgressBar: true,
+      });
+    }
+
+    //Get Confirmation
+    const confirm = await Swal.fire({
+      title: "Report this lesson?",
+      text: "Are you sure you want to report this content?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, Report",
+      cancelButtonText: "Cancel",
+      confirmButtonColor: "#d33",
+    });
+
+    if (!confirm.isConfirmed) return;
+
+    // Select Reason
+    const { value: reason } = await Swal.fire({
+      title: "Select a reason",
+      input: "select",
+      inputOptions: {
+        inappropriate: "Inappropriate Content",
+        hate: "Hate Speech or Harassment",
+        misleading: "Misleading or False Information",
+        spam: "Spam or Promotional Content",
+        sensitive: "Sensitive or Disturbing Content",
+        other: "Other",
+      },
+      inputPlaceholder: "Choose a reason",
+      showCancelButton: true,
+      confirmButtonText: "Submit Report",
+    });
+
+    if (!reason) return;
+
+    //Create Data for database
+    const reportData = {
+      lessonId,
+      reporterEmail: user.email,
+      reason,
+      timestamp: new Date(),
+    };
+
+    try {
+      await axiosInstance.post("/reports", reportData);
+
+      Swal.fire({
+        title: "Report Submitted",
+        text: "Thank you. Our team will review this lesson.",
+        icon: "success",
+        confirmButtonText: "OK",
+        timer: 3000,
+        timerProgressBar: true,
+      });
+    } catch (error) {
+      const message = error.response?.data?.message;
+
+      //Show backend message on frontend
+      if (message === "You already reported this lesson.") {
+        return Swal.fire({
+          title: "Already Reported",
+          text: "You already reported this lesson.",
+          icon: "info",
+          confirmButtonText: "OK",
+          timer: 2000,
+          timerProgressBar: true,
+        });
+      }
+
+      // For all other errors
+      Swal.fire({
+        title: "Error",
+        text: "Could not submit report. Try again later.",
+        icon: "error",
+        confirmButtonText: "OK",
+        timer: 3000,
+        timerProgressBar: true,
+      });
+    }
+  };
+
   return (
     <div className=" p-3 md:p-5 lg:p-10 shadow rounded-xl bg-white space-y-5">
       {/* Lesson Title and date*/}
@@ -74,7 +171,10 @@ const LessonContent = ({ lesson }) => {
         </button>
 
         {/* Report Button */}
-        <button className="flex items-center gap-2 px-5 py-1 bg-orange-50 text-orange-600 rounded-lg hover:bg-orange-100 shadow-sm transition">
+        <button
+          onClick={() => handleLessonReport(lesson._id)}
+          className="flex items-center gap-2 px-5 py-1 bg-orange-50 text-orange-600 rounded-lg hover:bg-orange-100 shadow-sm transition cursor-pointer"
+        >
           <span className="text-lg">🚩</span>
           <span className="font-medium">Report</span>
         </button>
