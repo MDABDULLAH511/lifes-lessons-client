@@ -1,8 +1,70 @@
 import React from "react";
+import { useForm } from "react-hook-form";
 import { FaUser } from "react-icons/fa";
 import { IoIosSend } from "react-icons/io";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import { toast } from "react-toastify";
+import useAuth from "../../../Hooks/UseAuth";
+import { useQuery } from "@tanstack/react-query";
+import useAxios from "../../../Hooks/useAxios";
+import LoadingSpinner from "../../../Components/LoadingSpinner";
 
-const LessonComment = () => {
+const LessonComment = ({ lesson }) => {
+  const { user, loading } = useAuth();
+  const axiosSecure = useAxiosSecure();
+  const axiosInstance = useAxios();
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+
+  //Load Comment for this Lesson (by id)
+  const { refetch, data: comments = [] } = useQuery({
+    queryKey: ["comments", lesson._id],
+    queryFn: async () => {
+      const res = await axiosInstance.get(`/comments?lessonId=${lesson._id}`);
+      return res.data;
+    },
+  });
+
+  // Handle Post a Comment
+  const handleAddLesson = async (data) => {
+    // Save comment to the database
+    if (user) {
+      const commentText = {
+        ...data,
+        lessonId: lesson._id,
+        commenterName: user.displayName,
+        commenterPhoto: user.photoURL,
+        data: new Date(),
+      };
+      await axiosSecure.post("/comments", commentText).then((res) => {
+        if (res.data.insertedId) {
+          refetch();
+          toast("Comment post Successfully", {
+            position: "top-left",
+            autoClose: 2000,
+          });
+          reset();
+        }
+      });
+    } else {
+      toast.warn("Please log in to post a comment.", {
+        position: "top-left",
+        autoClose: 2000,
+        theme: "dark",
+      });
+      reset();
+    }
+  };
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
   return (
     <div className=" p-3 md:p-5 lg:p-10 shadow rounded-xl bg-white space-y-5 ">
       <div>
@@ -13,15 +75,21 @@ const LessonComment = () => {
 
       {/* Comment Box */}
       <div>
-        <form className="w-full p-4 bg-white rounded-xl shadow">
+        <form
+          onSubmit={handleSubmit(handleAddLesson)}
+          className="w-full p-4 bg-white rounded-xl shadow"
+        >
           {/* <!-- Input Box --> */}
           <div className="rounded-lg p-3">
             <textarea
               name="message"
               className="w-full h-20 outline-none resize-none text-gray-800"
               placeholder="Write your reply..."
-              required
+              {...register("comment", { required: true })}
             ></textarea>
+            {errors.comment?.type === "required" && (
+              <p className="text-red-500">Type you comment</p>
+            )}
 
             {/* <!-- Action Row --> */}
             <div className="flex items-center justify-between mt-3">
@@ -64,83 +132,53 @@ const LessonComment = () => {
 
       {/* Each Comment */}
       <div className="flex flex-col gap-5">
-        <div className="flex items-start gap-3">
-          <div className="relative">
+        {comments.length == 0 && (
+          <h3 className="text-sm font-medium">
+            No comments yet. Be the first to comment!
+          </h3>
+        )}
+
+        {comments.map((comment, ind) => (
+          <div className="flex items-start gap-3" key={ind}>
             {/* comment user */}
-            <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
-              <FaUser size={20} />
+            <div className="relative">
+              <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
+                {comment.commenterPhoto ? (
+                  <img
+                    src={comment.commenterPhoto}
+                    alt=""
+                    className="rounded-full w-10 h-10"
+                  />
+                ) : (
+                  <FaUser size={20} />
+                )}
+              </div>
+
+              <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></span>
             </div>
+            {/* commenter name and date */}
+            <div className="flex-1">
+              <div className="flex justify-between items-center">
+                <h3 className="text-sm font-medium">
+                  {comment.commenterName ? comment.commenterName : "Unknown"}
+                </h3>
+                <span className="text-xs text-gray-500 numberFont flex flex-wrap gap-2">
+                  <span className="border-r-2 border-gray-300 pr-2">
+                    {new Date(comment.data).toLocaleDateString()}
+                  </span>
+                  <span>
+                    {new Date(comment.data).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </span>
+                </span>
+              </div>
 
-            <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></span>
-          </div>
-
-          <div className="flex-1">
-            <div className="flex justify-between items-center">
-              <h3 className="text-sm font-medium">Yassine Zanina</h3>
-              <span className="text-xs text-gray-500">
-                Wednesday, March 13th at 2:45pm
-              </span>
+              <p className="text-sm text-gray-700 mt-1">{comment.comment}</p>
             </div>
-
-            <p className="text-sm text-gray-700 mt-1">
-              I've been using this product for a few days now and I'm really
-              impressed! The interface is intuitive and easy to use, and the
-              features are exactly what I need to streamline my workflow.
-            </p>
           </div>
-        </div>
-
-        <div className="flex items-start gap-3">
-          <div className="relative">
-            {/* comment user */}
-            <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
-              <FaUser size={20} />
-            </div>
-
-            <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></span>
-          </div>
-
-          <div className="flex-1">
-            <div className="flex justify-between items-center">
-              <h3 className="text-sm font-medium">Yassine Zanina</h3>
-              <span className="text-xs text-gray-500">
-                Wednesday, March 13th at 2:45pm
-              </span>
-            </div>
-
-            <p className="text-sm text-gray-700 mt-1">
-              I've been using this product for a few days now and I'm really
-              impressed! The interface is intuitive and easy to use, and the
-              features are exactly what I need to streamline my workflow.
-            </p>
-          </div>
-        </div>
-
-        <div className="flex items-start gap-3">
-          <div className="relative">
-            {/* comment user */}
-            <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
-              <FaUser size={20} />
-            </div>
-
-            <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></span>
-          </div>
-
-          <div className="flex-1">
-            <div className="flex justify-between items-center">
-              <h3 className="text-sm font-medium">Yassine Zanina</h3>
-              <span className="text-xs text-gray-500">
-                Wednesday, March 13th at 2:45pm
-              </span>
-            </div>
-
-            <p className="text-sm text-gray-700 mt-1">
-              I've been using this product for a few days now and I'm really
-              impressed! The interface is intuitive and easy to use, and the
-              features are exactly what I need to streamline my workflow.
-            </p>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );

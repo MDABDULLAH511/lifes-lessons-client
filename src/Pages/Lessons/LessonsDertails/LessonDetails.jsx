@@ -33,7 +33,7 @@ const LessonDetails = () => {
             <LessonContent lesson={lesson} />
 
             {/* Lesson Comment Section  */}
-            <LessonComment />
+            <LessonComment lesson={lesson} />
           </div>
 
           {/* Right Side */}
