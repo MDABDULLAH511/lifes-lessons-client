@@ -44,7 +44,7 @@ const LessonDetails = () => {
 
         {/* Related lessons */}
         <div className="p-3 md:p-5 lg:p-10 shadow rounded-xl bg-white space-y-5">
-          <RelatedLesson />
+          <RelatedLesson lesson={lesson} />
         </div>
       </Container>
     </div>
