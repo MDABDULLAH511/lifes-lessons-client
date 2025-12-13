@@ -129,7 +129,6 @@ const MyLessons = () => {
 
   // Toggle Access Level (Free/Paid)
   const handleToggleAccessLevel = async (id, newAccessLevel) => {
-    console.log(isPremium);
     if (isPremium === true) {
       const res = await axiosSecure.patch(`/lessons/${id}/status`, {
         accessLevel: newAccessLevel,

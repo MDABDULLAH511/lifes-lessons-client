@@ -4,7 +4,7 @@ import useAuth from "../../../Hooks/UseAuth";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { toast } from "react-toastify";
 
-const FavoriteButton = ({ lesson }) => {
+const FavoriteButton = ({ lesson, favRefetch }) => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const [isFavorite, setIsFavorite] = useState(false);
@@ -20,31 +20,33 @@ const FavoriteButton = ({ lesson }) => {
     }
   }, [user, lesson, axiosSecure]);
 
-  console.log(lesson._id, "It's from favorites BTN");
-
   const handleToggleFavorite = async (lessonId, isChecked) => {
     if (isChecked) {
       await axiosSecure.post("/favorites", { lessonId, userEmail: user.email });
+      favRefetch();
       toast("Added to favorites");
     } else {
       await axiosSecure.delete("/favorites", {
         data: { lessonId, userEmail: user.email },
       });
+      favRefetch();
       toast("Removed from favorites");
     }
   };
   return (
     <StyledWrapper>
       <div>
-        <input />
-
         <input
           type="checkbox"
           id="favorite"
           checked={isFavorite}
           onChange={(e) => {
             if (!user) {
-              toast.warn("Login required to manage favorites");
+              toast.warn("Please log in to add favorites", {
+                position: "top-left",
+                autoClose: 2000,
+                theme: "dark",
+              });
               return;
             }
 
@@ -84,7 +86,7 @@ const StyledWrapper = styled.div`
     display: flex;
     align-items: center;
     gap: 14px;
-    padding: 12px 15px;
+    padding: 14px 15px;
     cursor: pointer;
     user-select: none;
     border-radius: 8px;

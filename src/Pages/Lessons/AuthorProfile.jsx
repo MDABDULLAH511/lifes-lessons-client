@@ -21,17 +21,16 @@ const AuthorProfile = () => {
     enabled: !!email,
   });
 
-  // Load Lesson by Creator
+  // Load all public Lesson by Creator
   const { data: lessons = [] } = useQuery({
-    queryKey: ["lessons-by-email", user?.email],
-    enabled: !!user?.email,
+    queryKey: ["lessons-by-email", email],
     queryFn: async () => {
-      const res = await axiosInstance.get(`/lessons?email=${user.email}`);
+      const res = await axiosInstance.get(
+        `/lessons?email=${email}&privacy=public`
+      );
       return res.data;
     },
   });
-
-  console.log(lessons);
 
   return (
     <div className="bg-gray-50">

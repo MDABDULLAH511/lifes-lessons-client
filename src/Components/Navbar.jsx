@@ -107,7 +107,7 @@ const Navbar = () => {
                         <img
                           src={user.photoURL ? user.photoURL : userIcon}
                           alt=""
-                          className="w-11 h-11  rounded-[5px] bg-white cursor-pointer p-0.5"
+                          className="w-11 h-11  rounded-[5px] bg-transparent cursor-pointer border-2 border-white"
                         />
                         <p className="max-w-[200px] truncate">
                           {user.displayName ? user.displayName : "Unknown"}

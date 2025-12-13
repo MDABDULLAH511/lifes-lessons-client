@@ -23,7 +23,7 @@ const Login = () => {
     singInUser(data.email, data.password)
       .then((result) => {
         setUser(result.user);
-        toast.success("✅ Login successful!");
+        toast.success("Login successful!");
         navigate(location?.state || "/");
       })
       .catch((error) => {
@@ -55,12 +55,12 @@ const Login = () => {
 
   return (
     <Container>
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col lg:flex-row justify-between items-center py-5 lg:py-0">
         {/* Login Form */}
         <div className="py-20 flex-1 items-center">
           <div className="max-w-sm mx-auto">
             <div className="mb-8 text-center">
-              <h2 className="font-semibold text-[42px]">
+              <h2 className="font-semibold  text-3xl lg:text-[42px]">
                 Welcome <span className="text-primary">Back!</span>
               </h2>
               <p>Please sign in to continue to your dashboard.</p>

@@ -25,6 +25,7 @@ const Register = () => {
 
   const handleRegistration = (data) => {
     const profileImage = data.photo && data.photo[0];
+
     registerUser(data.email, data.password)
       .then((result) => {
         const user = result.user;
@@ -37,45 +38,36 @@ const Register = () => {
           import.meta.env.VITE_image_host_key
         }`;
 
-        axios
-          .post(imageAPI_URL, formData)
-          .then((res) => {
-            const photoURL = res.data.data.url;
+        axios.post(imageAPI_URL, formData).then((res) => {
+          const photoURL = res.data.data.url;
 
-            // Update User Profile
-            const userProfile = {
-              displayName: data.name,
-              photoURL: photoURL,
-            };
-            updateUserProfile(userProfile)
-              .then(() => {
-                //Create user on database
-                const userInfo = {
-                  email: user.email,
-                  displayName: user.displayName,
-                  photoURL: user.photoURL,
-                };
-                axiosSecure
-                  .post("/users", userInfo)
-                  .then(() => {
-                    toast.success("Account created successfully! 🎉");
-                    navigate(location.state || "/");
-                  })
-                  .catch((err) => {
-                    toast("❌ Failed to create user on database.");
-                    setLoading(false);
-                  });
-              })
-              .catch((error) => {
-                toast("❌ Failed to update user profile.");
-                setLoading(false);
-              });
-          })
+          //Create user on database
+          const userInfo = {
+            email: data.email,
+            displayName: data.name,
+            photoURL: photoURL,
+          };
+          axiosSecure
+            .post("/users", userInfo)
+            .then((res) => {})
+            .catch((err) => {
+              console.log(err);
+            });
 
-          .catch((error) => {
-            toast("❌ Failed to upload user photo url.");
-            setLoading(false);
-          });
+          // Update User Profile
+          const userProfile = {
+            displayName: data.name,
+            photoURL: photoURL,
+          };
+          updateUserProfile(userProfile)
+            .then(() => {
+              toast.success("Account created successfully! 🎉");
+              navigate(location.state || "/");
+            })
+            .catch((error) => {
+              setLoading(false);
+            });
+        });
       })
       .catch((error) => {
         switch (error.code) {
@@ -135,14 +127,15 @@ const Register = () => {
         setLoading(false);
       });
   };
+
   return (
     <Container>
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col lg:flex-row justify-between items-center py-5 lg:py-0">
         {/* Login Form */}
         <div className="py-20 flex-1">
           <div className="max-w-sm mx-auto">
             <div className="mb-8 text-center">
-              <h2 className="font-semibold text-[42px]">
+              <h2 className="font-semibold text-3xl lg:text-[42px]">
                 Create<span className="text-primary"> Account.</span>
               </h2>
               <p>
@@ -160,10 +153,13 @@ const Register = () => {
                 <label className="label">Image</label>
                 <input
                   type="file"
-                  {...register("photo")}
+                  {...register("photo", { required: true })}
                   className="file-input w-full  file:bg-primary  file:text-white"
                   placeholder="photo"
                 />
+                {errors.photo?.type === "required" && (
+                  <p className="text-red-600">Photo is required</p>
+                )}
 
                 {/* Name */}
                 <label className="label">Name</label>

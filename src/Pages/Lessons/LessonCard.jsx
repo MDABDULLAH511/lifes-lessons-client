@@ -40,7 +40,6 @@ const LessonCard = ({ lesson }) => {
     return <LoadingSpinner />;
   }
 
-  console.log(isPremium);
   return (
     <div className="relative bg-white shadow rounded-xl p-4 w-full border border-gray-50">
       {/* Premium Blur Overlay  */}
@@ -94,12 +93,7 @@ const LessonCard = ({ lesson }) => {
           </p>
         </div>
       </div>
-      {/* <Link
-        to={`/lessons/${_id}`}
-        className="mt-4 w-full block text-center border border-primary text-primary font-medium py-2 rounded-sm hover:bg-primary hover:text-white duration-300"
-      >
-        See Details
-      </Link> */}
+
       <Link
         to={`/lessons/${_id}`}
         className="mt-4 w-full block text-center bg-primary text-white font-medium py-2 rounded-sm hover:bg-[#225ccf] duration-300"

@@ -3,15 +3,15 @@ import FeaturedImagePlaceholder from "../../../assets/lessonPlaceholder.png";
 import { BsCalendar2Date } from "react-icons/bs";
 import { MdCreate } from "react-icons/md";
 import FavoriteButton from "./FavoriteButton";
-import { FaShareAlt } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import useAuth from "../../../Hooks/UseAuth";
 import useAxios from "../../../Hooks/useAxios";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import LoadingSpinner from "../../../Components/LoadingSpinner";
+import ShareButton from "./ShareButton";
 
-const LessonContent = ({ lesson, refetch }) => {
+const LessonContent = ({ lesson, refetch, favRefetch }) => {
   const { user, loading } = useAuth();
   const axiosInstance = useAxios();
   const axiosSecure = useAxiosSecure();
@@ -35,7 +35,7 @@ const LessonContent = ({ lesson, refetch }) => {
   if (loading) {
     return <LoadingSpinner />;
   }
-  
+
   // Handle Likes Lesson
   const handleToggleLike = async () => {
     if (!user) {
@@ -206,7 +206,7 @@ const LessonContent = ({ lesson, refetch }) => {
 
       {/* Interaction Buttons */}
       <div className="mt-10 flex flex-wrap justify-between gap-5 items-center ">
-        <FavoriteButton lesson={lesson} />
+        <FavoriteButton lesson={lesson} favRefetch={favRefetch} />
 
         {/* Like Button */}
         <button
@@ -228,10 +228,8 @@ const LessonContent = ({ lesson, refetch }) => {
           <span className="font-medium">Report</span>
         </button>
 
-        <button className="flex items-center gap-2 px-4 py-3 bg-green-50 text-green-600 rounded-lg hover:bg-green-100 shadow-sm transition">
-          <FaShareAlt className="text-lg" />
-          <span className="font-medium">Share</span>
-        </button>
+        {/* Share Button */}
+        <ShareButton />
       </div>
     </div>
   );

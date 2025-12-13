@@ -25,7 +25,7 @@ const UpgradeMembership = () => {
       email: users[0].email,
       _id: users[0]._id,
     };
-    console.log("Hello User", userInfo);
+    
     // Then send it
     const res = await axiosSecure.post("/create-checkout-session", userInfo);
     window.location.assign(res.data.url);

@@ -5,7 +5,11 @@ import { useQuery } from "@tanstack/react-query";
 import useAxios from "../../../Hooks/useAxios";
 import { Link } from "react-router";
 
-const LessonInfo = ({ lesson }) => {
+//Make random number for views
+const views = Math.floor(Math.random() * 10000);
+const formattedViews = views >= 1000 ? `${(views / 1000).toFixed(1)}K` : views;
+
+const LessonInfo = ({ lesson, favorites }) => {
   const axiosInstance = useAxios();
   const { createdBy } = lesson;
 
@@ -18,13 +22,13 @@ const LessonInfo = ({ lesson }) => {
     },
   });
 
-  console.log(user[0]?._id);
-
-  // Load lesson by creator
+  // Load all public Lesson by Creator
   const { data: lessons = [] } = useQuery({
-    queryKey: ["lessons", createdBy],
+    queryKey: ["lessons-by-email", createdBy],
     queryFn: async () => {
-      const res = await axiosInstance.get(`/lessons?email=${createdBy}`);
+      const res = await axiosInstance.get(
+        `/lessons?email=${createdBy}&privacy=public`
+      );
       return res.data;
     },
   });
@@ -41,19 +45,19 @@ const LessonInfo = ({ lesson }) => {
         <div>
           <ul className="space-y-2 text-gray-700">
             <li className="numberFont">
-              <strong>Likes:</strong> 870
+              <strong>Likes:</strong> {lesson.likesCount}k
             </li>
             <li className="numberFont">
-              <strong>Favorites:</strong> 220
+              <strong>Favorites:</strong> {favorites.length}
             </li>
             <li className="numberFont">
-              <strong>Views:</strong> 5.4k
+              <strong>Views:</strong> {formattedViews}
             </li>
-            <li>
-              <strong>Visibility:</strong> Public
+            <li className="capitalize">
+              <strong>Visibility:</strong> {lesson.privacy}
             </li>
-            <li>
-              <strong>Access Level:</strong> Free
+            <li className="capitalize">
+              <strong>Access Level:</strong> {lesson.accessLevel}
             </li>
           </ul>
         </div>

@@ -13,7 +13,7 @@ const RelatedLesson = ({ lesson }) => {
     queryKey: ["lessons", category, limit],
     queryFn: async () => {
       const res = await axiosInstance.get(
-        `/lessons?category=${category}&limit=${limit}`
+        `/lessons?category=${category}&privacy=public&limit=${limit}`
       );
       return res.data;
     },
@@ -24,13 +24,11 @@ const RelatedLesson = ({ lesson }) => {
     queryKey: ["lessons", emotionalTone, limit],
     queryFn: async () => {
       const res = await axiosInstance.get(
-        `/lessons?emotionalTone=${emotionalTone}&limit=${limit}`
+        `/lessons?emotionalTone=${emotionalTone}&privacy=public&limit=${limit}`
       );
       return res.data;
     },
   });
-
-  console.log(toneLessons);
 
   return (
     <div>

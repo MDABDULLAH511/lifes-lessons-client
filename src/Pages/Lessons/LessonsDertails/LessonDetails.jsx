@@ -10,7 +10,6 @@ import { useQuery } from "@tanstack/react-query";
 import useAxios from "../../../Hooks/useAxios";
 
 const LessonDetails = () => {
-  // Load Lesson
   const axiosInstance = useAxios();
   const { id } = useParams();
 
@@ -23,6 +22,15 @@ const LessonDetails = () => {
     },
   });
 
+  //Load Favorites data by lesson id
+  const { refetch: favRefetch, data: favorites = [] } = useQuery({
+    queryKey: ["favorites", lesson._id],
+    queryFn: async () => {
+      const res = await axiosInstance.get(`/favorites?lessonId=${id}`);
+      return res.data;
+    },
+  });
+
   return (
     <div className="bg-gray-50">
       <Container>
@@ -30,7 +38,11 @@ const LessonDetails = () => {
           {/* Left Side  */}
           <div className="col-span-12 lg:col-span-8 space-y-5 md:space-y-10">
             {/* Lesson Basic Details */}
-            <LessonContent lesson={lesson} refetch={refetch} />
+            <LessonContent
+              lesson={lesson}
+              refetch={refetch}
+              favRefetch={favRefetch}
+            />
 
             {/* Lesson Comment Section  */}
             <LessonComment lesson={lesson} />
@@ -38,7 +50,7 @@ const LessonDetails = () => {
 
           {/* Right Side */}
           <div className="col-span-12 lg:col-span-4 space-y-5 md:space-y-10">
-            <LessonInfo lesson={lesson} />
+            <LessonInfo lesson={lesson} favorites={favorites} />
           </div>
         </div>
 

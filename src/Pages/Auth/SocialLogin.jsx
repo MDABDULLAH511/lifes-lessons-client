@@ -31,38 +31,34 @@ const SocialLogin = () => {
             toast.success("Logged in with Google! 🎉");
           })
           .catch((error) => {
-            // Custom error messages based on error.code
-            switch (error.code) {
-              case "auth/popup-closed-by-user":
-                toast.error(
-                  "🙋‍♂️ You closed the Google popup before signing in!"
-                );
-                break;
-
-              case "auth/cancelled-popup-request":
-                toast.error("❌ Google sign-in was cancelled. Try again!");
-                break;
-
-              case "auth/network-request-failed":
-                toast.error(
-                  "🌐 Network error! Check your internet connection."
-                );
-                break;
-
-              case "auth/account-exists-with-different-credential":
-                toast.error(
-                  "⚠️ An account already exists with a different credential."
-                );
-                break;
-
-              default:
-                toast.error("🐾 Google sign-in failed. Please try again!");
-            }
+            console.log(error);
             setLoading(false);
           });
       })
       .catch((error) => {
-        console.log(error);
+        // Custom error messages based on error.code
+        switch (error.code) {
+          case "auth/popup-closed-by-user":
+            toast.error("🙋‍♂️ You closed the Google popup before signing in!");
+            break;
+
+          case "auth/cancelled-popup-request":
+            toast.error("❌ Google sign-in was cancelled. Try again!");
+            break;
+
+          case "auth/network-request-failed":
+            toast.error("🌐 Network error! Check your internet connection.");
+            break;
+
+          case "auth/account-exists-with-different-credential":
+            toast.error(
+              "⚠️ An account already exists with a different credential."
+            );
+            break;
+
+          default:
+            toast.error("🐾 Google sign-in failed. Please try again!");
+        }
       });
   };
 

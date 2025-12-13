@@ -19,5 +19,6 @@ It also allows users to explore lessons shared by others, discover new perspecti
 -Sweet Alert2
 -Axios
 -Stripe Payment Gateway
+-React Share
 
 **Key Features**
