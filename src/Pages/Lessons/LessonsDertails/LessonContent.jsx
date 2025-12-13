@@ -1,16 +1,60 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import FeaturedImagePlaceholder from "../../../assets/lessonPlaceholder.png";
 import { BsCalendar2Date } from "react-icons/bs";
 import { MdCreate } from "react-icons/md";
 import FavoriteButton from "./FavoriteButton";
 import { FaShareAlt } from "react-icons/fa";
 import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 import useAuth from "../../../Hooks/UseAuth";
 import useAxios from "../../../Hooks/useAxios";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import LoadingSpinner from "../../../Components/LoadingSpinner";
 
-const LessonContent = ({ lesson }) => {
-  const { user } = useAuth();
+const LessonContent = ({ lesson, refetch }) => {
+  const { user, loading } = useAuth();
   const axiosInstance = useAxios();
+  const axiosSecure = useAxiosSecure();
+
+  //Like
+  const [isLiked, setIsLiked] = useState(false);
+  useEffect(() => {
+    if (!user) {
+      setIsLiked(false);
+      return;
+    }
+
+    // Check current user has liked the lesson
+    const liked = lesson.likes?.includes(user.uid) || false;
+
+    if (liked !== isLiked) {
+      setIsLiked(liked);
+    }
+  }, [user, lesson.likes, lesson.likesCount, isLiked]);
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+  
+  // Handle Likes Lesson
+  const handleToggleLike = async () => {
+    if (!user) {
+      toast.warn("Please log in to like", {
+        position: "top-left",
+        autoClose: 2000,
+        theme: "dark",
+      });
+    }
+
+    const res = await axiosSecure.patch(`/lessons/${lesson._id}/like`, {
+      userId: user.uid,
+    });
+
+    if (res.data.modifiedCount) {
+      setIsLiked(res.data.liked);
+      refetch();
+    }
+  };
 
   // Handle Lesson Report
   const handleLessonReport = async (lessonId) => {
@@ -161,25 +205,30 @@ const LessonContent = ({ lesson }) => {
       </div>
 
       {/* Interaction Buttons */}
-      <div className="mt-10 flex flex-wrap justify-between gap-5">
+      <div className="mt-10 flex flex-wrap justify-between gap-5 items-center ">
         <FavoriteButton lesson={lesson} />
 
         {/* Like Button */}
-        <button className="flex items-center gap-2 px-5 py-1 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 shadow-sm transition">
-          <span className="text-lg">❤️</span>
-          <span className="font-medium">Like</span>
+        <button
+          onClick={handleToggleLike}
+          className="flex items-center gap-2 px-5 py-2.5 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 shadow-sm transition cursor-pointer"
+        >
+          {<span className="text-2xl">{isLiked ? "❤️" : "🤍"} </span>}
+          <span className="font-medium numberFont">
+            Like {lesson.likesCount}
+          </span>
         </button>
 
         {/* Report Button */}
         <button
           onClick={() => handleLessonReport(lesson._id)}
-          className="flex items-center gap-2 px-5 py-1 bg-orange-50 text-orange-600 rounded-lg hover:bg-orange-100 shadow-sm transition cursor-pointer"
+          className="flex items-center gap-2 px-5 py-2.5 bg-orange-50 text-orange-600 rounded-lg hover:bg-orange-100 shadow-sm transition cursor-pointer"
         >
           <span className="text-lg">🚩</span>
           <span className="font-medium">Report</span>
         </button>
 
-        <button className="flex items-center gap-2 px-4 py-2 bg-green-50 text-green-600 rounded-lg hover:bg-green-100 shadow-sm transition">
+        <button className="flex items-center gap-2 px-4 py-3 bg-green-50 text-green-600 rounded-lg hover:bg-green-100 shadow-sm transition">
           <FaShareAlt className="text-lg" />
           <span className="font-medium">Share</span>
         </button>

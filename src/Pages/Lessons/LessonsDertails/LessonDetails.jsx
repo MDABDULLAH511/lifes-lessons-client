@@ -15,7 +15,7 @@ const LessonDetails = () => {
   const { id } = useParams();
 
   //Load Lesson by ID
-  const { data: lesson = [] } = useQuery({
+  const { refetch, data: lesson = [] } = useQuery({
     queryKey: ["lessons", id],
     queryFn: async () => {
       const res = await axiosInstance.get(`/lessons/${id}`);
@@ -30,7 +30,7 @@ const LessonDetails = () => {
           {/* Left Side  */}
           <div className="col-span-12 lg:col-span-8 space-y-5 md:space-y-10">
             {/* Lesson Basic Details */}
-            <LessonContent lesson={lesson} />
+            <LessonContent lesson={lesson} refetch={refetch} />
 
             {/* Lesson Comment Section  */}
             <LessonComment lesson={lesson} />
