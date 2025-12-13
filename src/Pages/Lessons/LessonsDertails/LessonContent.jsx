@@ -162,7 +162,7 @@ const LessonContent = ({ lesson }) => {
 
       {/* Interaction Buttons */}
       <div className="mt-10 flex flex-wrap justify-between gap-5">
-        <FavoriteButton />
+        <FavoriteButton lesson={lesson} />
 
         {/* Like Button */}
         <button className="flex items-center gap-2 px-5 py-1 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 shadow-sm transition">

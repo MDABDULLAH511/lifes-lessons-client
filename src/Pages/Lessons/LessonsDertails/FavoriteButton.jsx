@@ -1,17 +1,58 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import useAuth from "../../../Hooks/UseAuth";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import { toast } from "react-toastify";
 
-const FavoriteButton = () => {
+const FavoriteButton = ({ lesson }) => {
+  const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  //if user have check on DB Already Added to Favorites before or not
+  useEffect(() => {
+    if (user?.email && lesson?._id) {
+      axiosSecure
+        .get(`/favorites/check?lessonId=${lesson._id}&userEmail=${user.email}`)
+        .then((res) => {
+          setIsFavorite(res.data.isFavorite);
+        });
+    }
+  }, [user, lesson, axiosSecure]);
+
+  console.log(lesson._id, "It's from favorites BTN");
+
+  const handleToggleFavorite = async (lessonId, isChecked) => {
+    if (isChecked) {
+      await axiosSecure.post("/favorites", { lessonId, userEmail: user.email });
+      toast("Added to favorites");
+    } else {
+      await axiosSecure.delete("/favorites", {
+        data: { lessonId, userEmail: user.email },
+      });
+      toast("Removed from favorites");
+    }
+  };
   return (
     <StyledWrapper>
       <div>
+        <input />
+
         <input
-          defaultValue="favorite-button"
-          name="favorite-checkbox"
-          id="favorite"
-          defaultChecked="checked"
           type="checkbox"
+          id="favorite"
+          checked={isFavorite}
+          onChange={(e) => {
+            if (!user) {
+              toast.warn("Login required to manage favorites");
+              return;
+            }
+
+            setIsFavorite(e.target.checked);
+            handleToggleFavorite(lesson._id, e.target.checked);
+          }}
         />
+
         <label className="favoriteContainer" htmlFor="favorite">
           <svg
             className="feather feather-heart"
