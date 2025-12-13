@@ -12,6 +12,10 @@ import { IoCloudUploadOutline } from "react-icons/io5";
 import useUserStatus from "../../Hooks/useUserStatus";
 import { toast } from "react-toastify";
 import LoadingSpinner from "../../Components/LoadingSpinner";
+import { CiCalendarDate } from "react-icons/ci";
+import { FcLike } from "react-icons/fc";
+import { AiFillLike } from "react-icons/ai";
+import axios from "axios";
 
 const MyLessons = () => {
   const { user, loading } = useAuth();
@@ -89,14 +93,33 @@ const MyLessons = () => {
   };
 
   //Update Lesson Handler
-  const handleUpdateLesson = (data) => {
+  const handleUpdateLesson = async (data) => {
+    //store the image and get the Photo url
+    let lessonImage = "";
+    const selectedFile = data.lessonImg?.[0];
+
+    // Upload only if image exists
+    if (selectedFile) {
+      const formData = new FormData();
+      formData.append("image", selectedFile);
+      const imageAPI_URL = `https://api.imgbb.com/1/upload?key=${
+        import.meta.env.VITE_image_host_key
+      }`;
+
+      await axios.post(imageAPI_URL, formData).then((res) => {
+        const photoURL = res.data.data.url;
+        lessonImage = photoURL;
+      });
+    }
+
+    // Lesson Update Content
     const updateLessonData = {
       lessonTitle: data.lessonTitle,
       category: data.category,
       emotionalTone: data.emotionalTone,
       privacy: data.privacy,
       accessLevel: data.accessLevel,
-      lessonImage: data.lessonImage,
+      lessonImage: lessonImage,
       lessonDesc: data.lessonDesc,
     };
 
@@ -196,7 +219,7 @@ const MyLessons = () => {
                 <th>{i + 1}</th>
                 <td>{limitWords(lesson.lessonTitle)}</td>
                 <td className="capitalize">{lesson.category}</td>
-                {/* private :public */}
+                {/* Visibility: private :public */}
                 <td>
                   <label className="switch">
                     <input
@@ -214,7 +237,7 @@ const MyLessons = () => {
                   </label>
                 </td>
 
-                {/* Free/Paid */}
+                {/* Access Level : Free/Paid */}
                 <td>
                   <label className="switch">
                     <input
@@ -232,7 +255,24 @@ const MyLessons = () => {
                   </label>
                 </td>
 
-                <td>{new Date(lesson.createdAt).toLocaleDateString()}</td>
+                <td className="numberFont">
+                  <span className="flex gap-1 items-center numberFont">
+                    <CiCalendarDate size={18} />
+                    {new Date(lesson.createdAt).toLocaleDateString()}
+                  </span>
+                  <div className="flex gap-5 items-center mt-0.5  numberFont">
+                    <span className="flex gap-1 items-center">
+                      <FcLike size={18} />
+                      {lesson.favoritesCount}
+                    </span>
+                    <span className="flex gap-1 items-center numberFont">
+                      <AiFillLike size={18} color="#fab02b" />
+                      {lesson.likesCount ? lesson.likesCount : "0"}K
+                    </span>
+                  </div>
+                </td>
+
+                {/* View / Update / Delete */}
                 <td className="flex gap-3">
                   {/* view */}
                   <Link
