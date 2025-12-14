@@ -80,17 +80,21 @@ const AuthorProfile = () => {
 
                   <div>
                     <h5 className="font-semibold mb-2">About User</h5>
-                    <p>
-                      This user is an active member of our learning community.
-                      They share insights, explore new lessons, and continue to
-                      grow through meaningful learning experiences. Depending on
-                      their activity and contributions, their profile may
-                      include published lessons, saved favorites, feedback, and
-                      other interactions within the platform. Whether they are a
-                      learner, creator, or both, this profile represents their
-                      journey of knowledge, creativity, and personal
-                      development.
-                    </p>
+                    {user.profileBio ? (
+                      <p>{user.profileBio}</p>
+                    ) : (
+                      <p>
+                        This user is an active member of our learning community.
+                        They share insights, explore new lessons, and continue
+                        to grow through meaningful learning experiences.
+                        Depending on their activity and contributions, their
+                        profile may include published lessons, saved favorites,
+                        feedback, and other interactions within the platform.
+                        Whether they are a learner, creator, or both, this
+                        profile represents their journey of knowledge,
+                        creativity, and personal development.
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>

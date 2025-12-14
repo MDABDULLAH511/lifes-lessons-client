@@ -76,6 +76,33 @@
   width: 100% !important;
 }
 
+/* Input image filed css for update profile Image filed */
+.inputImgPro {
+  max-width: 190px;
+  display: none;
+}
+
+.labelFileImgPro {
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  width: 150px;
+  height: 150px;
+  border: 2px solid #ccc;
+  border-radius: 100%;
+  align-items: center;
+  text-align: center;
+  padding: 10px;
+  color: #0b0b0b;
+  font-weight: 700;
+  cursor: pointer;
+  z-index: 999;
+}
+.labelFileImgUpdatePage {
+  width: 100% !important;
+}
+
 /* Custom Zebra fom my lesson page table  */
 .my-custom-zebra tbody tr:nth-child(odd) {
   background-color: transparent !important;
