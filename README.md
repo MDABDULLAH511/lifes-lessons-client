@@ -20,5 +20,6 @@ It also allows users to explore lessons shared by others, discover new perspecti
 -Axios
 -Stripe Payment Gateway
 -React Share
+-Recharts
 
 **Key Features**
