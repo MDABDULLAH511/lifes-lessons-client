@@ -107,7 +107,7 @@ const LessonContent = ({ lesson, refetch, favRefetch }) => {
       lessonId,
       reporterEmail: user.email,
       reason,
-      timestamp: new Date(),
+      createdAt: new Date(),
     };
 
     try {
