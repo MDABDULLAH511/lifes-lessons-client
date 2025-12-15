@@ -45,7 +45,7 @@ const ReportedLessons = () => {
       confirmButtonText: "Yes, delete",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const res = await axiosSecure.delete(`/admin/lessons/${lessonId}`);
+        const res = await axiosSecure.delete(`/lessons/${lessonId}`);
 
         if (res.data.lessonDeleted) {
           refetch();

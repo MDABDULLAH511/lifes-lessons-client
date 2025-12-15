@@ -1,10 +1,11 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { FaStar } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import LoadingSpinner from "../../../Components/LoadingSpinner";
+import { Link } from "react-router";
 
 const ManageLessons = () => {
   const axiosSecure = useAxiosSecure();
@@ -88,7 +89,7 @@ const ManageLessons = () => {
       confirmButtonText: "Yes, delete",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const res = await axiosSecure.delete(`/admin/lessons/${lessonId}`);
+        const res = await axiosSecure.delete(`/lessons/${lessonId}`);
         if (res.data.lessonDeleted) {
           refetch();
           Swal.fire("Deleted!", "Lesson removed successfully.", "success");
@@ -173,7 +174,14 @@ const ManageLessons = () => {
             {lessons.map((lesson, index) => (
               <tr key={lesson._id}>
                 <th>{index + 1}</th>
-                <td>{lesson.lessonTitle}</td>
+                <td>
+                  <Link
+                    to={`/lessons/${lesson._id}`}
+                    className="hover:underline"
+                  >
+                    {lesson.lessonTitle}
+                  </Link>
+                </td>
                 <td className="capitalize">{lesson.category}</td>
                 <td className="capitalize"> {lesson.privacy}</td>
                 {/* Featured */}

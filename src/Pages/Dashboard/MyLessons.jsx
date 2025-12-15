@@ -62,7 +62,7 @@ const MyLessons = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axiosSecure.delete(`/lessons/${id}`).then((res) => {
-          if (res.data.deletedCount) {
+          if (res.data.lessonDeleted) {
             //Update the Data in UI
             refetch();
             Swal.fire({
