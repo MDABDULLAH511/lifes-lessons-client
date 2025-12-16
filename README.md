@@ -21,5 +21,6 @@ It also allows users to explore lessons shared by others, discover new perspecti
 -Stripe Payment Gateway
 -React Share
 -Recharts
+-Swiper Slider
 
 **Key Features**

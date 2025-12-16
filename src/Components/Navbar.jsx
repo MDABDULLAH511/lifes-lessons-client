@@ -70,7 +70,7 @@ const Navbar = () => {
 
               <div>
                 {user ? (
-                  <div className="dropdown dropdown-end flex flex-col items-center">
+                  <div className="dropdown dropdown-end flex flex-col items-center z-9">
                     <div className=" relative">
                       <img
                         tabIndex={0}
