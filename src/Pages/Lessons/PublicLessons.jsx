@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import heroBG from "../../assets/public_lesson_hero_bg.jpg";
 import Container from "../../Components/Container";
 import { useQuery } from "@tanstack/react-query";
@@ -21,9 +21,13 @@ const PublicLessons = () => {
   const [sort, setSort] = useState("createdAt");
   const [order, setOrder] = useState("desc");
 
+  // Pagination
+  const [limit, setLimit] = useState(6);
+  const [skip, setSkip] = useState(0);
+
   //  Fetch lessons
   const { data: lessons = [], isLoading } = useQuery({
-    queryKey: ["public-lessons", filters, searchText, sort, order],
+    queryKey: ["public-lessons", filters, searchText, sort, order, skip, limit],
 
     queryFn: async () => {
       let query = `privacy=public&sort=${sort}&order=${order}`;
@@ -39,11 +43,28 @@ const PublicLessons = () => {
       if (searchText) {
         query += `&search=${searchText}`;
       }
+      if (limit) {
+        query += `&limit=${limit}`;
+      }
+      if (skip) {
+        query += `&skip=${skip}`;
+      }
 
       const res = await axiosInstance.get(`/lessons?${query}`);
       return res.data;
     },
   });
+
+  const { data: countData = 0 } = useQuery({
+    queryKey: ["lesson-count"],
+    queryFn: async () => {
+      const res = await axiosInstance.get("/lessons/count?privacy=public");
+      return res.data.count;
+    },
+  });
+
+  const totalPages = Math.ceil(countData / limit);
+  const currentPage = Math.floor(skip / limit);
 
   //  Reset filters
   const handleResetFilters = () => {
@@ -181,6 +202,41 @@ const PublicLessons = () => {
             ))}
           </div>
         </div>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="flex justify-center items-center gap-2 mb-10 flex-wrap">
+            {/* Prev */}
+            <button
+              disabled={currentPage === 0}
+              onClick={() => setSkip((prev) => prev - limit)}
+              className="px-3 py-1.5 border rounded disabled:opacity-50 cursor-pointer"
+            >
+              Prev
+            </button>
+
+            {[...Array(totalPages).keys()].map((page) => (
+              <button
+                key={page}
+                onClick={() => setSkip(page * limit)}
+                className={`px-3 py-1.5 border rounded cursor-pointer ${
+                  currentPage === page ? "bg-primary text-white" : "bg-white"
+                }`}
+              >
+                {page + 1}
+              </button>
+            ))}
+
+            {/* Next */}
+            <button
+              disabled={currentPage === totalPages - 1}
+              onClick={() => setSkip((prev) => prev + limit)}
+              className="px-3 py-1.5 border rounded disabled:opacity-50 cursor-pointer"
+            >
+              Next
+            </button>
+          </div>
+        )}
       </Container>
     </div>
   );

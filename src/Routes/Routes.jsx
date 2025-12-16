@@ -132,12 +132,11 @@ const router = createBrowserRouter([
       },
       {
         path: "admin/reported-lessons",
-        Component: ReportedLessons,
-        // element: (
-        //   <AdminRoute>
-        //     <ReportedLessons />
-        //   </AdminRoute>
-        // ),
+        element: (
+          <AdminRoute>
+            <ReportedLessons />
+          </AdminRoute>
+        ),
       },
     ],
   },
