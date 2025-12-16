@@ -22,6 +22,7 @@ import PublicLessons from "../Pages/Lessons/PublicLessons";
 import LessonDetails from "../Pages/Lessons/LessonsDertails/LessonDetails";
 import UserProfile from "../Pages/Dashboard/DashboardProfile/UserProfile";
 import AuthorProfile from "../Pages/Lessons/AuthorProfile";
+import PaymentCancel from "../Pages/Payment/PaymentCancel";
 
 const router = createBrowserRouter([
   {
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
       {
         path: "payment-success",
         Component: PaymentSuccess,
+      },
+      {
+        path: "payment-cancel",
+        Component: PaymentCancel,
       },
       {
         path: "public-lessons",
