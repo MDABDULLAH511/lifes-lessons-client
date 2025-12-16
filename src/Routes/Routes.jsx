@@ -23,6 +23,7 @@ import LessonDetails from "../Pages/Lessons/LessonsDertails/LessonDetails";
 import UserProfile from "../Pages/Dashboard/DashboardProfile/UserProfile";
 import AuthorProfile from "../Pages/Lessons/AuthorProfile";
 import PaymentCancel from "../Pages/Payment/PaymentCancel";
+import AdminRoute from "./AdminRoute";
 
 const router = createBrowserRouter([
   {
@@ -115,17 +116,29 @@ const router = createBrowserRouter([
       /* ========== Admin Access Only ========== */
       {
         path: "admin/manage-users",
-        Component: ManageUsers,
+        element: (
+          <AdminRoute>
+            <ManageUsers />
+          </AdminRoute>
+        ),
       },
       {
         path: "admin/manage-lessons",
-        Component: ManageLessons,
+        element: (
+          <AdminRoute>
+            <ManageLessons />
+          </AdminRoute>
+        ),
       },
       {
         path: "admin/reported-lessons",
         Component: ReportedLessons,
+        // element: (
+        //   <AdminRoute>
+        //     <ReportedLessons />
+        //   </AdminRoute>
+        // ),
       },
-      { path: "*", Component: NotFound },
     ],
   },
   { path: "*", Component: NotFound },

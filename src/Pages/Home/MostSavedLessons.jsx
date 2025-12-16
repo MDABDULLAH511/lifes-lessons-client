@@ -1,21 +1,19 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import Container from "../../Components/Container";
 import MostSavedLessonCard from "./MostSavedLessonCard";
-import { FiStar } from "react-icons/fi";
 import LoadingSpinner from "../../Components/LoadingSpinner";
+import useAxios from "../../Hooks/useAxios";
 const MostSavedLessons = () => {
-  const axiosSecure = useAxiosSecure();
+  const axiosInstance = useAxios();
 
   const { data: lessons = [], isLoading } = useQuery({
     queryKey: ["most-saved-lessons"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/lesson/most-saved");
+      const res = await axiosInstance.get("/lesson/most-saved");
       return res.data;
     },
   });
-
 
   if (isLoading) {
     return <LoadingSpinner />;

@@ -7,7 +7,6 @@ import {
   FiTrendingUp,
 } from "react-icons/fi";
 import { Link } from "react-router";
-import WeeklyAnalyticsChart from "./WeeklyAnalyticsChart";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import LoadingSpinner from "../../../Components/LoadingSpinner";
 import { SiReaddotcv } from "react-icons/si";
@@ -57,7 +56,7 @@ const AdminDashboardHome = () => {
     }))
     .sort((a, b) => b.totalLessons - a.totalLessons)
     .slice(0, 3);
-  console.log(users, contributors);
+
   // Today’s new lessons
   const today = new Date().toLocaleDateString();
   const newLessonsToday = lessons.filter(
@@ -172,7 +171,12 @@ const AdminDashboardHome = () => {
                 />
               </Link>
               <p className="font-semibold mt-5">{bestUser.name} </p>
-              <h4 className="">Created Lessons: <span className="text-xl font-semibold">{bestUser.totalLessons}</span> </h4>
+              <h4 className="">
+                Created Lessons:{" "}
+                <span className="text-xl font-semibold">
+                  {bestUser.totalLessons}
+                </span>{" "}
+              </h4>
             </li>
           ))}
         </ul>

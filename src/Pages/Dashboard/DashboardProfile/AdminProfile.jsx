@@ -56,7 +56,7 @@ const AdminProfile = () => {
     },
   });
 
-  //Update Lesson Modal Open Handler
+  //Update profile Modal Open Handler
   const openUpdateProfileModal = () => {
     setViewImage(currentUser.photoURL);
     updateModal.current.showModal();
