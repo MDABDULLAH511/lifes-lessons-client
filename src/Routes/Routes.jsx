@@ -74,7 +74,6 @@ const router = createBrowserRouter([
       },
     ],
   },
-
   //========== Dashboard Router ====================//
   {
     path: "dashboard",
@@ -126,8 +125,10 @@ const router = createBrowserRouter([
         path: "admin/reported-lessons",
         Component: ReportedLessons,
       },
+      { path: "*", Component: NotFound },
     ],
   },
+  { path: "*", Component: NotFound },
 ]);
 
 export default router;
