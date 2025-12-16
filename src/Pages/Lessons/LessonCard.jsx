@@ -20,6 +20,7 @@ const LessonCard = ({ lesson }) => {
     accessLevel,
     createdAt,
     createdBy,
+    privacy,
   } = lesson;
 
   //Load Creator Data
@@ -73,6 +74,9 @@ const LessonCard = ({ lesson }) => {
         </span>
         <span className="bg-green-100 text-green-600 px-2 py-1 rounded-sm">
           {accessLevel}
+        </span>
+        <span className="bg-yellow-100 text-yellow-600 px-2 py-1 rounded-sm">
+          {privacy}
         </span>
       </div>
       <h3 className="text-lg font-bold mt-3">{limitWords(lessonTitle, 20)}</h3>
