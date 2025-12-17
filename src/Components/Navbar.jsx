@@ -68,9 +68,9 @@ const Navbar = () => {
             <div className="hidden lg:flex justify-end items-center gap-5">
               <ul className="menu menu-horizontal px-1 space-x-8">{links}</ul>
 
-              <div>
+              <div className="">
                 {user ? (
-                  <div className="dropdown dropdown-end flex flex-col items-center z-9">
+                  <div className="dropdown dropdown-end flex flex-col items-center relative z-9">
                     <div className=" relative">
                       <img
                         tabIndex={0}
@@ -83,7 +83,7 @@ const Navbar = () => {
                       {/* tooltip-container */}
                       {isPremium === true && (
                         <div className="tooltip-container absolute -top-2 -right-2">
-                          <div className="relative">
+                          <div className="relative overflow-hidden">
                             <div className="group peer relative z-10 p-1">
                               <FaStar
                                 size={20}
@@ -98,17 +98,20 @@ const Navbar = () => {
                         </div>
                       )}
                     </div>
+                    {/* Dropdown Content*/}
                     <div
                       tabIndex="-1"
                       className="menu dropdown-content bg-base-200 rounded-[5px] border-b-3 border-primary z-1 mt-15 w-60 p-5 shadow-sm text-white space-y-4"
                     >
                       {/* User Image and Name */}
                       <div className="flex gap-3 items-center mb-5">
-                        <img
-                          src={user.photoURL ? user.photoURL : userIcon}
-                          alt=""
-                          className="w-11 h-11  rounded-[5px] bg-transparent cursor-pointer border-2 border-white"
-                        />
+                        <Link to={"/dashboard/profile"}>
+                          <img
+                            src={user.photoURL ? user.photoURL : userIcon}
+                            alt=""
+                            className="w-11 h-11  rounded-[5px] bg-transparent cursor-pointer border-2 border-white"
+                          />
+                        </Link>
                         <p className="max-w-[200px] truncate">
                           {user.displayName ? user.displayName : "Unknown"}
                         </p>
@@ -207,11 +210,13 @@ const Navbar = () => {
                           >
                             {/* User Image and Name */}
                             <div className="flex gap-3 items-center mb-5">
-                              <img
-                                src={user.photoURL ? user.photoURL : userIcon}
-                                alt=""
-                                className="w-11 h-11  rounded-[5px] bg-primary cursor-pointer p-1"
-                              />
+                              <Link to={"/dashboard/profile"}>
+                                <img
+                                  src={user.photoURL ? user.photoURL : userIcon}
+                                  alt=""
+                                  className="w-11 h-11  rounded-[5px] bg-primary cursor-pointer p-1"
+                                />
+                              </Link>
                               <p className="max-w-[200px] truncate">
                                 {user.displayName
                                   ? user.displayName
@@ -221,12 +226,15 @@ const Navbar = () => {
 
                             {/* Link for User */}
                             <div className="space-y-3">
-                              <p className="profileItem">
+                              <Link
+                                to={"/dashboard/profile"}
+                                className="profileItem"
+                              >
                                 <LuUser size={20} /> Profile
-                              </p>
-                              <p className="profileItem">
+                              </Link>
+                              <Link to={"/dashboard"} className="profileItem">
                                 <LuLayoutDashboard size={18} /> Dashboard
-                              </p>
+                              </Link>
                             </div>
                             {/* Logout Button */}
                             <button

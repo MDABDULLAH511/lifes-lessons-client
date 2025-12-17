@@ -20,12 +20,12 @@ const NavbarTop = () => {
               <FaLinkedinIn />
             </li>
           </ul>
-          <ul className="flex items-center gap-4">
-            <li className="flex items-center gap-2 cursor-pointer">
+          <ul className="flex items-center gap-4 ">
+            <li className="flex items-center gap-2 cursor-pointer numberFont">
               <HiOutlineMail size={18} />
               info@life'slessons.com
             </li>
-            <li className="flex items-center gap-2 cursor-pointer">
+            <li className="flex items-center gap-2 cursor-pointer numberFont">
               <MdCall size={16} />
               01883 11 22 44
             </li>

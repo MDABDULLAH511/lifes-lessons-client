@@ -22,5 +22,6 @@ It also allows users to explore lessons shared by others, discover new perspecti
 -React Share
 -Recharts
 -Swiper Slider
+-Lottie React
 
 **Key Features**

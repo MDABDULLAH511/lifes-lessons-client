@@ -7,6 +7,8 @@ import LoadingSpinner from "../../Components/LoadingSpinner";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import axios from "axios";
 import { toast } from "react-toastify";
+import successAnimation from "../../assets/ScanningDocument.json";
+import Lottie from "lottie-react";
 
 const AddLesson = () => {
   const {
@@ -16,10 +18,11 @@ const AddLesson = () => {
     formState: { errors },
   } = useForm();
 
+  const [showAnimation, setShowAnimation] = useState(false);
+
   const { isPremium, userLoading } = useUserStatus();
   const { user, loading } = useAuth();
   const axiosSecure = useAxiosSecure();
-  // const navigate = useNavigate();
   const [viewImage, setViewImage] = useState();
 
   if (userLoading || loading) {
@@ -55,7 +58,11 @@ const AddLesson = () => {
 
     await axiosSecure.post("/lessons", lessonData).then((res) => {
       if (res.data.insertedId) {
-        toast.success("Lesson Created Successfully");
+        toast.success("Lesson Created Successfully 🎉");
+        // Show Lottie animation
+        setShowAnimation(true);
+        // Hide after 2 seconds
+        setTimeout(() => setShowAnimation(false), 5500);
       }
     });
 
@@ -246,6 +253,13 @@ const AddLesson = () => {
           />
         </div>
       </form>
+
+      {/* Lotti animatio */}
+      {showAnimation && (
+        <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-64 h-64">
+          <Lottie animationData={successAnimation} loop={true} size={200}/>
+        </div>
+      )}
     </div>
   );
 };

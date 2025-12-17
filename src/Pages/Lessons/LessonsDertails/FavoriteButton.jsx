@@ -44,7 +44,6 @@ const FavoriteButton = ({ lesson, favRefetch }) => {
             if (!user) {
               toast.warn("Please log in to add favorites", {
                 position: "top-left",
-                autoClose: 2000,
                 theme: "dark",
               });
               return;

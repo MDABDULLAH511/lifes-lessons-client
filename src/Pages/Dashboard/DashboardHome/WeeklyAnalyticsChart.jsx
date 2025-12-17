@@ -1,20 +1,18 @@
 import {
-  LineChart,
-  Line,
+  BarChart,
+  Bar,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   Legend,
   ResponsiveContainer,
-  PieChart,
-  Pie,
 } from "recharts";
 import useAuth from "../../../Hooks/UseAuth";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 
-const WeeklyAnalyticsChart = () => {
+const WeeklyAnalyticsBarChart = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
 
@@ -30,7 +28,7 @@ const WeeklyAnalyticsChart = () => {
   const lessons = data.lessons || [];
   const favorites = data.favorites || [];
 
-  //add lesson + favorite data by week
+  // Combine lesson + favorite data by week
   const chartData = [];
 
   lessons.forEach((lesson) => {
@@ -46,33 +44,31 @@ const WeeklyAnalyticsChart = () => {
 
   return (
     <div className="bg-white rounded-xl p-6 shadow-sm w-full">
-      <ResponsiveContainer width="100%" height={442}>
-        <LineChart data={chartData}>
+      <ResponsiveContainer width="100%" height={420}>
+        <BarChart data={chartData} barGap={8}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="week" />
           <YAxis allowDecimals={false} />
           <Tooltip />
           <Legend />
 
-          <Line
-            type="monotone"
+          <Bar
             dataKey="lessons"
-            stroke="#4582f3"
-            strokeWidth={2}
+            fill="#4582f3"
             name="Lessons Created"
+            radius={[6, 6, 0, 0]}
           />
 
-          <Line
-            type="monotone"
+          <Bar
             dataKey="favorites"
-            stroke="#f59e0b"
-            strokeWidth={2}
+            fill="#f59e0b"
             name="Favorites Added"
+            radius={[6, 6, 0, 0]}
           />
-        </LineChart>
+        </BarChart>
       </ResponsiveContainer>
     </div>
   );
 };
 
-export default WeeklyAnalyticsChart;
+export default WeeklyAnalyticsBarChart;

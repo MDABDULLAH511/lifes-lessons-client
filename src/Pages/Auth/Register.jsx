@@ -61,7 +61,7 @@ const Register = () => {
           };
           updateUserProfile(userProfile)
             .then(() => {
-              toast.success("Account created successfully! 🎉");
+              toast("Account created successfully! 🎉");
               navigate(location.state || "/");
             })
             .catch((error) => {

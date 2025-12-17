@@ -1,19 +1,16 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import {
-  FiUser,
-  FiBookOpen,
-  FiAlertCircle,
-  FiTrendingUp,
-} from "react-icons/fi";
+import { FiUser, FiAlertCircle, FiTrendingUp } from "react-icons/fi";
 import { Link } from "react-router";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import LoadingSpinner from "../../../Components/LoadingSpinner";
 import { SiReaddotcv } from "react-icons/si";
 import AdminDashboardChart from "./AdminDashboardChart";
+import useAuth from "../../../Hooks/UseAuth";
 
 const AdminDashboardHome = () => {
   const axiosSecure = useAxiosSecure();
+  const { user, loading } = useAuth();
 
   // Load total users and their created lesson count
   const { data: users = [], isLoading: usersLoading } = useQuery({
@@ -40,6 +37,7 @@ const AdminDashboardHome = () => {
       const res = await axiosSecure.get("/reports");
       return res.data;
     },
+    enabled: !!user?.email && !loading,
   });
 
   if (usersLoading || lessonsLoading || reportedLoading) {
@@ -186,9 +184,6 @@ const AdminDashboardHome = () => {
 
       {/* Weekly Analytics Chart */}
       <div className="my-10">
-        <h2 className="font-bold text-xl md:text-2xl mb-5 text-center">
-          Platform-wide overview & activity monitoring
-        </h2>
         <AdminDashboardChart />
       </div>
     </div>

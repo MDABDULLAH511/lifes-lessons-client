@@ -56,7 +56,7 @@ const UserProfile = () => {
     },
   });
 
-  //Update Lesson Modal Open Handler
+  //Update Profile Modal Open Handler
   const openUpdateProfileModal = () => {
     setViewImage(currentUser.photoURL);
     updateModal.current.showModal();
@@ -64,8 +64,6 @@ const UserProfile = () => {
 
   // Update Lesson Handler
   const handleUpdateProfile = async (data) => {
-
-
     //store the image and get the Photo url
     let profileImage = "";
     const selectedFile = data.profileImg?.[0];
@@ -103,11 +101,14 @@ const UserProfile = () => {
                 title: "Updated!",
                 text: "Your profile has been updated successfully.",
                 icon: "success",
+                timer: 2000,
+                timerProgressBar: true,
               });
             }
           });
       })
       .catch((error) => {
+        console.oog(error);
         setLoading(false);
       });
 

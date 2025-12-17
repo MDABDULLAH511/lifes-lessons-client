@@ -3,11 +3,13 @@ import useUserStatus from "../../../Hooks/useUserStatus";
 import LoadingSpinner from "../../../Components/LoadingSpinner";
 import AdminDashboardHome from "./AdminDashboardHome";
 import UserDashboardHome from "./UserDashboardHome";
+import useAuth from "../../../Hooks/UseAuth";
 
 const DashboardHome = () => {
   const { role, userLoading } = useUserStatus();
+  const { loading } = useAuth();
 
-  if (userLoading) {
+  if (userLoading || loading) {
     return <LoadingSpinner />;
   }
 

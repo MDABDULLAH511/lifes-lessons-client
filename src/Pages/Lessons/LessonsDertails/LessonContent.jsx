@@ -41,7 +41,6 @@ const LessonContent = ({ lesson, refetch, favRefetch }) => {
     if (!user) {
       toast.warn("Please log in to like", {
         position: "top-left",
-        autoClose: 2000,
         theme: "dark",
       });
     }
@@ -118,7 +117,7 @@ const LessonContent = ({ lesson, refetch, favRefetch }) => {
         text: "Thank you. Our team will review this lesson.",
         icon: "success",
         confirmButtonText: "OK",
-        timer: 3000,
+        timer: 2000,
         timerProgressBar: true,
       });
     } catch (error) {
@@ -142,7 +141,7 @@ const LessonContent = ({ lesson, refetch, favRefetch }) => {
         text: "Could not submit report. Try again later.",
         icon: "error",
         confirmButtonText: "OK",
-        timer: 3000,
+        timer: 2000,
         timerProgressBar: true,
       });
     }

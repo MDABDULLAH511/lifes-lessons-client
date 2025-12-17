@@ -51,13 +51,13 @@ const Footer = () => {
                 <Link to="/">Home</Link>
               </li>
               <li>
-                <Link to="/add-lesson">Add Lesson</Link>
+                <Link to="/dashboard/add-lesson">Add Lesson</Link>
               </li>
               <li>
-                <Link to="/my-lessons">My Lessons</Link>
+                <Link to="/dashboard/my-lessons">My Lessons</Link>
               </li>
               <li>
-                <Link to="/public-lesson">Public Lessons</Link>
+                <Link to="/public-lessons">Public Lessons</Link>
               </li>
             </ul>
           </div>
@@ -69,16 +69,16 @@ const Footer = () => {
             </h2>
             <ul className="flex flex-col gap-3">
               <li>
-                <Link to="/">About Us</Link>
+                <Link>About Us</Link>
               </li>
               <li>
-                <Link to="/">Our Team</Link>
+                <Link>Our Team</Link>
               </li>
               <li>
-                <Link to="/">contact us</Link>
+                <Link>contact us</Link>
               </li>
               <li>
-                <Link to="/">Terms & Conditions</Link>
+                <Link>Terms & Conditions</Link>
               </li>
             </ul>
           </div>

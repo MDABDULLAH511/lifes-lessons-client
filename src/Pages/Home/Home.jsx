@@ -28,7 +28,7 @@ const Home = () => {
                 challenge offers wisdom that textbooks can’t teach.
               </p>
             </div>
-            <div className="grid md:grid-cols-4 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
                 {
                   icon: <FiTrendingUp size={32} />,

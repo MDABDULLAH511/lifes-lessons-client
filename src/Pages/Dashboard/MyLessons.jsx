@@ -46,7 +46,7 @@ const MyLessons = () => {
   }
   // Make a user Friendly table (Control Lesson Tile length)
   const limitWords = (text) => {
-    return text?.length > 20 ? text.slice(0, 30) + "..." : text;
+    return text?.length > 25 ? text.slice(0, 25) + "..." : text;
   };
 
   //Delete Lesson Handler
@@ -69,6 +69,8 @@ const MyLessons = () => {
               title: "Deleted!",
               text: "Your lesson has been deleted.",
               icon: "success",
+              timer: 2000,
+              timerProgressBar: true,
             });
           }
         });
@@ -132,6 +134,8 @@ const MyLessons = () => {
             title: "Updated!",
             text: "Your lesson has been updated successfully.",
             icon: "success",
+            timer: 2000,
+            timerProgressBar: true,
           });
         }
       });
@@ -162,7 +166,10 @@ const MyLessons = () => {
       }
       return;
     } else {
-      toast.error("Upgrade to Premium to create paid lessons.");
+      toast.warn("Upgrade to Premium to create paid lessons.", {
+        position: "top-left",
+        theme: "dark",
+      });
     }
   };
 
@@ -217,7 +224,9 @@ const MyLessons = () => {
             {lessons.map((lesson, i) => (
               <tr key={i}>
                 <th>{i + 1}</th>
-                <td>{limitWords(lesson.lessonTitle)}</td>
+                <Link to={`/lessons/${lesson._id}`} className="hover:underline">
+                  {limitWords(lesson.lessonTitle)}
+                </Link>
                 <td className="capitalize">{lesson.category}</td>
                 {/* Visibility: private :public */}
                 <td>

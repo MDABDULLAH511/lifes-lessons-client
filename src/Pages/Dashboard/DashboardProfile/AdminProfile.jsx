@@ -64,7 +64,6 @@ const AdminProfile = () => {
 
   // Update Lesson Handler
   const handleUpdateProfile = async (data) => {
-
     //store the image and get the Photo url
     let profileImage = "";
     const selectedFile = data.profileImg?.[0];
@@ -102,6 +101,8 @@ const AdminProfile = () => {
                 title: "Updated!",
                 text: "Your profile has been updated successfully.",
                 icon: "success",
+                timer: 2000,
+                timerProgressBar: true,
               });
             }
           });

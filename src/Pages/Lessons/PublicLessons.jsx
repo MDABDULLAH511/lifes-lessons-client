@@ -196,7 +196,7 @@ const PublicLessons = () => {
           )}
 
           {/*  Lessons Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4   gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {lessons.map((lesson, ind) => (
               <LessonCard key={ind} lesson={lesson} />
             ))}

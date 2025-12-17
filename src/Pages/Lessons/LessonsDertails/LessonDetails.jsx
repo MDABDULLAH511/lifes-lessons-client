@@ -5,16 +5,23 @@ import LessonComment from "./LessonComment";
 import LessonContent from "./LessonContent";
 import LessonInfo from "./LessonInfo";
 import RelatedLesson from "./RelatedLesson";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import useAxios from "../../../Hooks/useAxios";
+import LoadingSpinner from "../../../Components/LoadingSpinner";
 
 const LessonDetails = () => {
   const axiosInstance = useAxios();
+  const navigate = useNavigate();
   const { id } = useParams();
 
   //Load Lesson by ID
-  const { refetch, data: lesson = [] } = useQuery({
+  const {
+    refetch,
+    isError,
+    isLoading,
+    data: lesson = [],
+  } = useQuery({
     queryKey: ["lessons", id],
     queryFn: async () => {
       const res = await axiosInstance.get(`/lessons/${id}`);
@@ -30,6 +37,14 @@ const LessonDetails = () => {
       return res.data;
     },
   });
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
+  if (isError || !lesson?._id) {
+    navigate("/error");
+  }
 
   return (
     <div className="bg-gray-50">

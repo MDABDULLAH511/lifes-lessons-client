@@ -53,6 +53,8 @@ const ReportedLessons = () => {
             title: "Deleted!",
             text: "Lesson and reports removed.",
             icon: "success",
+            timer: 2000,
+            timerProgressBar: true,
           });
         }
       }

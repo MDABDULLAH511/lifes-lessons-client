@@ -93,10 +93,21 @@ const ManageLessons = () => {
         const res = await axiosSecure.delete(`/lessons/${lessonId}`);
         if (res.data.lessonDeleted) {
           refetch();
-          Swal.fire("Deleted!", "Lesson removed successfully.", "success");
+          Swal.fire({
+            title: "Deleted!",
+            text: "Lesson removed successfully.",
+            icon: "success",
+            timer: 2000,
+            timerProgressBar: true,
+          });
         }
       }
     });
+  };
+
+  // Make a user Friendly table (Control Lesson Tile length)
+  const limitWords = (text) => {
+    return text?.length > 30 ? text.slice(0, 30) + "..." : text;
   };
 
   return (
@@ -180,7 +191,7 @@ const ManageLessons = () => {
                     to={`/lessons/${lesson._id}`}
                     className="hover:underline"
                   >
-                    {lesson.lessonTitle}
+                    {limitWords(lesson.lessonTitle)}
                   </Link>
                 </td>
                 <td className="capitalize">{lesson.category}</td>

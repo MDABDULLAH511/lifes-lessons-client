@@ -20,7 +20,6 @@ import ReportedLessons from "../Pages/Dashboard/OnlyAdmin/ReportedLessons";
 import Settings from "../Pages/Dashboard/Settings";
 import PublicLessons from "../Pages/Lessons/PublicLessons";
 import LessonDetails from "../Pages/Lessons/LessonsDertails/LessonDetails";
-import UserProfile from "../Pages/Dashboard/DashboardProfile/UserProfile";
 import AuthorProfile from "../Pages/Lessons/AuthorProfile";
 import PaymentCancel from "../Pages/Payment/PaymentCancel";
 import AdminRoute from "./AdminRoute";
@@ -90,16 +89,16 @@ const router = createBrowserRouter([
         index: true,
         Component: DashboardHome,
       },
+      {
+        path: "profile",
+        Component: DashboardProfile,
+      },
 
       {
         path: "add-lesson",
         Component: AddLesson,
       },
 
-      {
-        path: "profile",
-        Component: DashboardProfile,
-      },
       {
         path: "my-lessons",
         Component: MyLessons,
@@ -141,6 +140,10 @@ const router = createBrowserRouter([
     ],
   },
   { path: "*", Component: NotFound },
+  {
+    path: "error",
+    Component: NotFound,
+  },
 ]);
 
 export default router;

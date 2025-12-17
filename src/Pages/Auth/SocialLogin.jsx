@@ -28,11 +28,10 @@ const SocialLogin = () => {
           .post("/users", userInfo)
           .then(() => {
             navigate(location?.state || "/");
-            toast.success("Logged in with Google! 🎉");
+            toast("Logged in with Google! 🎉");
           })
           .catch((error) => {
             console.log(error);
-            setLoading(false);
           });
       })
       .catch((error) => {
@@ -60,6 +59,7 @@ const SocialLogin = () => {
             toast.error("🐾 Google sign-in failed. Please try again!");
         }
       });
+    setLoading(false);
   };
 
   return (

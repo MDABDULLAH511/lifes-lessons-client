@@ -155,7 +155,12 @@ const MyFavorites = () => {
             {favorites.map((item, i) => (
               <tr key={i}>
                 <th>{i + 1}</th>
-                <td>{limitWords(item.lesson.lessonTitle)}</td>
+                <Link
+                  to={`/lessons/${item.lesson._id}`}
+                  className="hover:underline"
+                >
+                  {limitWords(item.lesson.lessonTitle)}
+                </Link>
                 <td className="capitalize">{item.lesson.category}</td>
                 <td className="capitalize">{item.lesson.emotionalTone}</td>
                 <td className="capitalize">{item.lesson.privacy}</td>

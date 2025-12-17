@@ -44,17 +44,13 @@ const LessonComment = ({ lesson }) => {
       await axiosSecure.post("/comments", commentText).then((res) => {
         if (res.data.insertedId) {
           refetch();
-          toast("Comment post Successfully", {
-            position: "top-left",
-            autoClose: 2000,
-          });
+          toast("Comment post Successfully 🎉");
           reset();
         }
       });
     } else {
       toast.warn("Please log in to post a comment.", {
         position: "top-left",
-        autoClose: 2000,
         theme: "dark",
       });
       reset();
@@ -156,12 +152,14 @@ const LessonComment = ({ lesson }) => {
 
               <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></span>
             </div>
+
             {/* commenter name and date */}
             <div className="flex-1">
-              <div className="flex justify-between items-center">
+              <div className="flex flex-col md:flex-row itms-stat justify-between md:items-center">
                 <h3 className="text-sm font-medium">
                   {comment.commenterName ? comment.commenterName : "Unknown"}
                 </h3>
+                {/* date */}
                 <span className="text-xs text-gray-500 numberFont flex flex-wrap gap-2">
                   <span className="border-r-2 border-gray-300 pr-2">
                     {new Date(comment.data).toLocaleDateString()}

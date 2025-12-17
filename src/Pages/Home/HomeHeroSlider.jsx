@@ -22,7 +22,7 @@ const Home = () => {
       {/* ===== Slide 1 ===== */}
       <SwiperSlide>
         <div
-          className="h-full w-full bg-cover bg-center relative"
+          className="h-full w-full bg-cover bg-center relative z-1"
           style={{
             backgroundImage:
               "url(https://images.unsplash.com/photo-1503676260728-1c00da094a0b)",
@@ -57,7 +57,7 @@ const Home = () => {
       {/* ===== Slide 2 ===== */}
       <SwiperSlide>
         <div
-          className="h-full w-full bg-cover bg-center relative"
+          className="h-full w-full bg-cover bg-center relative z-1"
           style={{
             backgroundImage:
               "url(https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d)",

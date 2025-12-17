@@ -47,7 +47,13 @@ const ManageUsers = () => {
         });
 
         if (res.data.modifiedCount) {
-          Swal.fire("Updated!", `Role changed to ${newRole}`, "success");
+          Swal.fire({
+            title: "Updated!",
+            text: `Role changed to ${newRole}`,
+            icon: "success",
+            timer: 2000,
+            timerProgressBar: true,
+          });
           refetch();
         }
       }
