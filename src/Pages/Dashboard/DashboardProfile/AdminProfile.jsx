@@ -26,9 +26,9 @@ const AdminProfile = () => {
 
   // Load User
   const {
-    isLoading,
-    data: currentUsers = [],
     refetch,
+    data: currentUsers = [],
+    isLoading,
   } = useQuery({
     queryKey: ["users", user.email],
     queryFn: async () => {
@@ -39,7 +39,7 @@ const AdminProfile = () => {
   const currentUser = currentUsers[0];
 
   // Load all Lesson by current User
-  const { data: lessons = [] } = useQuery({
+  const { data: lessons = [], isLoading: currentUserLoading } = useQuery({
     queryKey: ["lessons-by-email", user.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/lessons?email=${user.email}`);
@@ -62,7 +62,7 @@ const AdminProfile = () => {
     updateModal.current.showModal();
   };
 
-  // Update Lesson Handler
+  // Update Profile Handler
   const handleUpdateProfile = async (data) => {
     //store the image and get the Photo url
     let profileImage = "";
@@ -114,7 +114,7 @@ const AdminProfile = () => {
     updateModal.current.close();
   };
 
-  if (isLoading) {
+  if (isLoading || currentUserLoading) {
     return <LoadingSpinner />;
   }
 

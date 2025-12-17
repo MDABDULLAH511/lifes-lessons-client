@@ -75,7 +75,7 @@ const AdminDashboardHome = () => {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 my-6">
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 my-6">
         {/* Manage User */}
         <div className="stat bg-white shadow rounded-xl p-4">
           <div className="stat-figure text-secondary">

@@ -6,13 +6,14 @@ import useAxios from "../../Hooks/useAxios";
 import userIcon from "../../assets/user.png";
 import { FaCrown } from "react-icons/fa";
 import LessonCard from "./LessonCard";
+import LoadingSpinner from "../../Components/LoadingSpinner";
 
 const AuthorProfile = () => {
   const { email } = useParams();
   const axiosInstance = useAxios();
 
   // Load Creator Data
-  const { data: user = {} } = useQuery({
+  const { data: user = {}, isLoading: currentUserLoading } = useQuery({
     queryKey: ["user-by-email", email],
     queryFn: async () => {
       const res = await axiosInstance.get(`/users?email=${email}`);
@@ -22,7 +23,7 @@ const AuthorProfile = () => {
   });
 
   // Load all public Lesson by Creator
-  const { data: lessons = [] } = useQuery({
+  const { data: lessons = [], isLoading } = useQuery({
     queryKey: ["lessons-by-email", email],
     queryFn: async () => {
       const res = await axiosInstance.get(
@@ -31,6 +32,10 @@ const AuthorProfile = () => {
       return res.data;
     },
   });
+
+  if (currentUserLoading || isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div className="bg-gray-50">

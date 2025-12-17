@@ -8,6 +8,7 @@ import { TbReportSearch } from "react-icons/tb";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import { FiRefreshCcw } from "react-icons/fi";
+import LoadingSpinner from "../../Components/LoadingSpinner";
 
 const MyFavorites = () => {
   const { user } = useAuth();
@@ -16,7 +17,11 @@ const MyFavorites = () => {
   const [emotionalTone, setEmotionalTone] = useState("");
 
   // Load Favorites data with Lesson details using aggregate API Also filter by  category and emotionalTone
-  const { refetch, data: favorites = [] } = useQuery({
+  const {
+    refetch,
+    data: favorites = [],
+    isLoading,
+  } = useQuery({
     queryKey: ["favorites", user?.email, category, emotionalTone],
     enabled: !!user?.email,
     queryFn: async () => {
@@ -59,11 +64,15 @@ const MyFavorites = () => {
     });
   };
 
-  // Handle reset filder
+  // Handle reset filter
   const handleResetFilters = () => {
     setCategory("");
     setEmotionalTone("");
   };
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div className="bg-accent/5 m-2 md:m-15 p-2 md:p-10 rounded-xl">

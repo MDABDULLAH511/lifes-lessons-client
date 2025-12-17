@@ -8,7 +8,7 @@ import Container from "../../Components/Container";
 const FeaturedLessons = () => {
   const axiosInstance = useAxios();
 
-  //Load All Public Lesson
+  //Load All Public Featured Lesson
   const limit = 3;
   const { data: lessons = [] } = useQuery({
     queryKey: ["lessons", limit],

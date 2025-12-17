@@ -83,7 +83,7 @@ const Navbar = () => {
                       {/* tooltip-container */}
                       {isPremium === true && (
                         <div className="tooltip-container absolute -top-2 -right-2">
-                          <div className="relative overflow-hidden">
+                          <div className="relative">
                             <div className="group peer relative z-10 p-1">
                               <FaStar
                                 size={20}
@@ -91,7 +91,7 @@ const Navbar = () => {
                                 className="duration-5000 group-hover:rotate-360 group-hover:scale-130"
                               />
                             </div>
-                            <div className="absolute left-1/2 w-40 -translate-x-1/2 translate-y-6 rounded bg-white text-primary font-semibold shadow p-3 text-sm opacity-0  peer-hover:bottom-[3.3rem] peer-hover:opacity-100 peer-hover:duration-500">
+                            <div className="absolute right-0 w-40 translate-y-6 rounded bg-white text-primary font-semibold shadow p-3 text-sm opacity-0  peer-hover:bottom-[3.3rem] peer-hover:opacity-100 peer-hover:duration-500">
                               <p className="text-center">Premium Member</p>
                             </div>
                           </div>

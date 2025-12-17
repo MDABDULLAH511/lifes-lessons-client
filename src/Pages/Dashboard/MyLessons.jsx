@@ -33,7 +33,11 @@ const MyLessons = () => {
   } = useForm();
 
   // Load Lesson from DB
-  const { refetch, data: lessons = [] } = useQuery({
+  const {
+    refetch,
+    data: lessons = [],
+    isLoading,
+  } = useQuery({
     queryKey: ["myLessons", user?.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/lessons?email=${user.email}`);
@@ -41,7 +45,7 @@ const MyLessons = () => {
     },
   });
 
-  if (userLoading || loading) {
+  if ((userLoading || loading, isLoading)) {
     return <LoadingSpinner />;
   }
   // Make a user Friendly table (Control Lesson Tile length)

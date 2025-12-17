@@ -6,13 +6,18 @@ import { FiRefreshCcw } from "react-icons/fi";
 import { FaTrashCan } from "react-icons/fa6";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { Link } from "react-router";
+import LoadingSpinner from "../../../Components/LoadingSpinner";
 
 const ManageUsers = () => {
   const axiosSecure = useAxiosSecure();
   const [roleFilter, setRoleFilter] = useState("");
 
   // Load Users data
-  const { refetch, data: users = [] } = useQuery({
+  const {
+    refetch,
+    data: users = [],
+    isLoading,
+  } = useQuery({
     queryKey: ["users", roleFilter],
     queryFn: async () => {
       const res = await axiosSecure.get("/admin/users", {
@@ -86,6 +91,10 @@ const ManageUsers = () => {
   const handleResetFilters = () => {
     setRoleFilter("");
   };
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div className="bg-accent/5 m-2 md:m-15 p-2 md:p-10 rounded-xl">
