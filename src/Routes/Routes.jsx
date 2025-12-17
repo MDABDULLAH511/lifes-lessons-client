@@ -66,7 +66,11 @@ const router = createBrowserRouter([
       },
       {
         path: "lessons/:id",
-        Component: LessonDetails,
+        element: (
+          <PrivateRoutes>
+            <LessonDetails />
+          </PrivateRoutes>
+        ),
       },
       {
         path: "profile/:email",
