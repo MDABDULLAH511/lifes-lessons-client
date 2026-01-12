@@ -5,6 +5,11 @@ import Container from "../../Components/Container";
 import { FiHeart, FiUser, FiTrendingUp, FiBookOpen } from "react-icons/fi";
 import TopContributors from "./TopContributors";
 import MostSavedLessons from "./MostSavedLessons";
+import Categories from "./Categories";
+import Statistics from "./Statistics";
+import Testimonials from "./Testimonials";
+import FAQ from "./FAQ";
+import CallToAction from "./CallToAction";
 
 const Home = () => {
   return (
@@ -70,6 +75,16 @@ const Home = () => {
       <TopContributors />
 
       <MostSavedLessons />
+
+      <Categories />
+
+      <Statistics />
+
+      <Testimonials />
+
+      <FAQ />
+
+      <CallToAction />
     </div>
   );
 };
