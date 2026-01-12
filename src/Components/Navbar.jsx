@@ -55,8 +55,8 @@ const Navbar = () => {
   );
   return (
     <>
-      <div className="shadow-sm md:py-0 bg-white ">
-        <NavbarTop />
+      <NavbarTop />
+      <div className="shadow-sm md:py-0 bg-white sticky top-0  z-9999">
         <Container>
           <div className="w-full flex items-center justify-between py-2 px-0">
             {/* Nav Logo */}
